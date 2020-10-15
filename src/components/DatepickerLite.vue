@@ -146,7 +146,7 @@ export default defineComponent({
       days: computed(() => {
         let year = datepicker.year;
         let month = datepicker.month;
-        let startDate = new Date(year + "-" + month + "-1");
+        let startDate = new Date(year + "/" + month + "/1");
         let lastDate = new Date(year, month, 0);
         let startDateWeekday = startDate.getDay();
         let lastDateWeekday = lastDate.getDay();

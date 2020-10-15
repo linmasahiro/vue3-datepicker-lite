@@ -1,0 +1,131 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>vue3-table-lite</title><style>body {
+            padding-top: 10px;
+        }
+
+      .container {
+          margin-right: auto;
+          margin-left: auto;
+          *zoom: 1;
+      }
+      .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
+          width: 940px;
+      }
+      @media (min-width: 1200px) {
+        .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
+            width: 1170px;
+        }
+      }
+      .container {
+          margin-right: auto;
+          margin-left: auto;
+          *zoom: 1;
+      }
+      .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
+          width: 940px;
+      }
+      .hero-unit {
+          padding: 60px;
+          margin-bottom: 30px;
+          font-size: 18px;
+          font-weight: 200;
+          line-height: 30px;
+          color: inherit;
+          background-color: #eeeeee;
+          -webkit-border-radius: 6px;
+          -moz-border-radius: 6px;
+          border-radius: 6px;
+      }
+      h2 {
+          font-size: 31.5px;
+      }
+      h1, h2, h3 {
+          line-height: 40px;
+      }
+      h1, h2, h3, h4, h5, h6 {
+          margin: 10px 0;
+          font-family: inherit;
+          font-weight: bold;
+          line-height: 20px;
+          color: inherit;
+          text-rendering: optimizelegibility;
+      }
+      p {
+          margin: 0 0 10px;
+      }
+      ul, ol {
+          padding: 0;
+          margin: 0 0 10px 25px;
+      }
+      li {
+          line-height: 20px;
+      }
+      pre {
+          display: block;
+          padding: 9.5px;
+          margin: 0 0 10px;
+          font-size: 13px;
+          line-height: 20px;
+          word-break: break-all;
+          word-wrap: break-word;
+          white-space: pre;
+          white-space: pre-wrap;
+          background-color: #f5f5f5;
+          border: 1px solid #ccc;
+          border: 1px solid rgba(0, 0, 0, 0.15);
+          -webkit-border-radius: 4px;
+          -moz-border-radius: 4px;
+          border-radius: 4px;
+      }
+      code, pre {
+          padding: 0 3px 2px;
+          font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+          font-size: 12px;
+          color: #333333;
+          -webkit-border-radius: 3px;
+          -moz-border-radius: 3px;
+          border-radius: 3px;
+      }
+      pre code {
+          padding: 0;
+          color: inherit;
+          white-space: pre;
+          white-space: pre-wrap;
+          background-color: transparent;
+          border: 0;
+      }
+      code {
+          padding: 2px 4px;
+          color: #d14;
+          background-color: #f7f7f9;
+          border: 1px solid #e1e1e8;
+          white-space: nowrap;
+      }</style><link href="./css/app.4a13788f.css" rel="preload" as="style"><link href="./js/app.9d59f24e.js" rel="preload" as="script"><link href="./js/chunk-vendors.19b3e2b8.js" rel="preload" as="script"><link href="./css/app.4a13788f.css" rel="stylesheet"></head><body><div class="container"><div class="hero-unit"><h1 id="home">vue3-datepicker-lite</h1><p>A very simple datepicker component for vue3.0!</p><hr><p><a href="https://github.com/linmasahiro/vue3-datepicker-lite">Github</a></p><p><iframe src="https://ghbtns.com/github-btn.html?user=linmasahiro&repo=vue3-datepicker-lite&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe></p></div><h2 id="demo">Demo</h2><p>Example Sample Demo</p><div><div id="app"></div></div><br><h2 id="info">Get Start</h2><div><ol><li>Use NPM<ol><li><pre><code>npm install vue3-datepicker-lite --save</code></pre></li><li><p>add to your project</p><pre><code>import DatepickerLite from 'vue3-datepicker-lite'</code></pre></li><li><p>set component attribuite</p><pre>
+                            <code>
+&lt;datepicker-lite 
+  :id-attr=&quot;datepickerSetting.id&quot;
+  :name-attr=&quot;datepickerSetting.name&quot;
+  :class-attr=&quot;datepickerSetting.class&quot;
+  :value-attr=&quot;datepickerSetting.value&quot;
+  :locale=&quot;datepickerSetting.locale&quot;
+  @value-changed=&quot;datepickerSetting.changeEvent&quot;
+/&gt;
+                            </code>
+                        </pre></li><li><p>sample setting data:</p><pre>
+                            <code>
+const datepickerSetting = {
+  id: "birthday",
+  name: "birthday",
+  class: "myDateInput",
+  value: "2020/10/01",
+  locale: {
+    weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    todayBtn: "Today",
+    clearBtn: "Clear",
+    closeBtn: "Close",
+  },
+  changeEvent: (value) => {
+    console.log(value + " selected!");
+  }
+}
+                            </code>
+                        </pre></li></ol></li></ol></div></div><div id="footer"><div class="container"><p class="muted credit">Copyright © 2020 <a href="https://github.com/linmasahiro" target="_blank">Lin</a> All Rights Reserved.</p></div></div><script src="./js/chunk-vendors.19b3e2b8.js"></script><script src="./js/app.9d59f24e.js"></script></body></html>

@@ -105,10 +105,15 @@ export default defineComponent({
       type: String,
       default: "",
     },
+    yearMinus: {
+      type: Number,
+      default: 0,
+    },
     locale: {
       type: Object,
       default: () => {
         return {
+          format: "{1}/{2}/{3}",
           weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
           todayBtn: "Today",
           clearBtn: "Clear",
@@ -118,8 +123,11 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const getDateString = (dateObj) => {
+    const getDateString = (dateObj, hasMinus) => {
       let yyyy = dateObj.getFullYear();
+      if (hasMinus) {
+        yyyy = parseInt(yyyy) - parseInt(props.yearMinus);
+      }
       let mm = dateObj.getMonth() + 1;
       if (mm < 10) {
         mm = "0" + mm;
@@ -144,7 +152,7 @@ export default defineComponent({
       }),
       month: 1,
       days: computed(() => {
-        let year = datepicker.year;
+        let year = parseInt(datepicker.year) + parseInt(props.yearMinus);
         let month = datepicker.month;
         let startDate = new Date(year + "/" + month + "/1");
         let lastDate = new Date(year, month, 0);
@@ -159,9 +167,9 @@ export default defineComponent({
         }
         let days = [];
         let row = [];
-        let today = getDateString(new Date());
+        let today = getDateString(new Date(), true);
         while (startDate.getTime() - lastDate.getTime() <= 0) {
-          let yyyy = startDate.getFullYear();
+          let yyyy = parseInt(startDate.getFullYear()) - parseInt(props.yearMinus);
           let mm = startDate.getMonth() + 1;
           let dd = startDate.getDate();
           let dateObj = {
@@ -169,8 +177,8 @@ export default defineComponent({
             month: mm,
             day: dd,
             weekday: startDate.getDay(),
-            dateString: getDateString(startDate),
-            isToday: getDateString(startDate) == today,
+            dateString: getDateString(startDate, true),
+            isToday: getDateString(startDate, true) == today,
           };
           row.push(dateObj);
           if (row.length >= 7) {
@@ -184,10 +192,10 @@ export default defineComponent({
     });
     watch(selectedValue, (value, prevValue) => {
       if (value != "") {
-        let re = /^[0-9]{4}\/([1-9]|0[1-9]|1[0-2])\/([1-9]|0[1-9]|[12][0-9]|3[01])$/;
+        let re = /^[0-9]{1,4}\/([1-9]|0[1-9]|1[0-2])\/([1-9]|0[1-9]|[12][0-9]|3[01])$/;
         let result = "";
         if (re.test(value)) {
-          result = getDateString(new Date(value));
+          result = getDateString(new Date(value), false);
         } else {
           result = prevValue;
         }
@@ -228,9 +236,9 @@ export default defineComponent({
     };
     const selectToday = () => {
       let today = new Date();
-      datepicker.year = today.getFullYear();
+      datepicker.year = parseInt(today.getFullYear()) - parseInt(props.yearMinus);
       datepicker.month = today.getMonth() + 1;
-      selectedValue.value = getDateString(today);
+      selectedValue.value = getDateString(today, true);
       datepicker.show = false;
     };
     const clear = () => {

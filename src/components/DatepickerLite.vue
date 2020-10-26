@@ -15,7 +15,13 @@
           <div class="picker__header">
             <div class="picker__month">
               <select v-model="datepicker.month">
-                <option v-for="n in 12" :key="n" :value="n">{{ n }}</option>
+                <option
+                  v-for="(n, i) in datepicker.monthList"
+                  :key="i"
+                  :value="n"
+                >
+                  {{ n }}
+                </option>
               </select>
             </div>
             <div class="picker__year">
@@ -54,10 +60,11 @@
                       'picker__day--outfocus': val.month != datepicker.month,
                       'picker__day--infocus': val.month == datepicker.month,
                       'picker__day--today': val.isToday,
+                      'picker__day--disabled': val.isDisabled,
                       'picker__day--selected picker__day--highlighted':
                         selectedValue == val.dateString,
                     }"
-                    @click="select(val.dateString)"
+                    @click="val.isDisabled ? false : select(val.dateString)"
                   >
                     {{ val.day }}
                   </div>
@@ -109,6 +116,14 @@ export default defineComponent({
       type: Number,
       default: 0,
     },
+    from: {
+      type: String,
+      default: "",
+    },
+    to: {
+      type: String,
+      default: "",
+    },
     locale: {
       type: Object,
       default: () => {
@@ -118,11 +133,12 @@ export default defineComponent({
           todayBtn: "Today",
           clearBtn: "Clear",
           closeBtn: "Close",
-        }
+        };
       },
     },
   },
   setup(props, { emit }) {
+    let dateFormatRex = /^[0-9]{1,4}\/([1-9]|0[1-9]|1[0-2])\/([1-9]|0[1-9]|[12][0-9]|3[01])$/;
     const getDateString = (dateObj, hasMinus) => {
       let yyyy = dateObj.getFullYear();
       if (hasMinus) {
@@ -142,15 +158,66 @@ export default defineComponent({
     const selectedValue = ref("");
     const datepicker = reactive({
       show: false,
+      hasRange: computed(() => {
+        let result = false;
+        if (
+          props.from &&
+          props.to &&
+          dateFormatRex.test(props.from) &&
+          dateFormatRex.test(props.to)
+        ) {
+          result = true;
+        }
+        return result;
+      }),
       year: 2020,
       years: computed(() => {
         let yearList = [];
         for (let i = datepicker.year - 10; i < datepicker.year + 10; i++) {
+          if (datepicker.hasRange) {
+            let fromDate = new Date(props.from);
+            let toDate = new Date(props.to);
+            if (i < fromDate.getFullYear()) {
+              continue;
+            }
+            if (i > toDate.getFullYear()) {
+              continue;
+            }
+          }
           yearList.push(i);
         }
         return yearList;
       }),
       month: 1,
+      monthList: computed(() => {
+        let result = [];
+        for (let i = 1; i <= 12; i++) {
+          if (datepicker.hasRange) {
+            let fromDate = new Date(props.from);
+            let toDate = new Date(props.to);
+            if (
+              datepicker.year == fromDate.getFullYear() &&
+              i < fromDate.getMonth() + 1
+            ) {
+              if (datepicker.month <= i) {
+                datepicker.month = fromDate.getMonth() + 1;
+              }
+              continue;
+            }
+            if (
+              datepicker.year == toDate.getFullYear() &&
+              i > toDate.getMonth() + 1
+            ) {
+              if (datepicker.month >= i) {
+                datepicker.month = toDate.getMonth() + 1;
+              }
+              continue;
+            }
+          }
+          result.push(i);
+        }
+        return result;
+      }),
       days: computed(() => {
         let year = parseInt(datepicker.year) + parseInt(props.yearMinus);
         let month = datepicker.month;
@@ -168,10 +235,35 @@ export default defineComponent({
         let days = [];
         let row = [];
         let today = getDateString(new Date(), true);
+        let isDisabled = false;
         while (startDate.getTime() - lastDate.getTime() <= 0) {
-          let yyyy = parseInt(startDate.getFullYear()) - parseInt(props.yearMinus);
+          isDisabled = false;
+          let yyyy =
+            parseInt(startDate.getFullYear()) - parseInt(props.yearMinus);
           let mm = startDate.getMonth() + 1;
           let dd = startDate.getDate();
+          if (datepicker.hasRange) {
+            let fromDate = new Date(props.from);
+            let toDate = new Date(props.to);
+            if (
+              yyyy < fromDate.getFullYear() ||
+              (yyyy == fromDate.getFullYear() && mm < toDate.getMonth() + 1) ||
+              (yyyy == fromDate.getFullYear() &&
+                mm == fromDate.getMonth() + 1 &&
+                dd < fromDate.getDate())
+            ) {
+              isDisabled = true;
+            }
+            if (
+              yyyy > toDate.getFullYear() ||
+              (yyyy == toDate.getFullYear() && mm > toDate.getMonth() + 1) ||
+              (yyyy == toDate.getFullYear() &&
+                mm == toDate.getMonth() + 1 &&
+                dd > toDate.getDate())
+            ) {
+              isDisabled = true;
+            }
+          }
           let dateObj = {
             year: yyyy,
             month: mm,
@@ -179,6 +271,7 @@ export default defineComponent({
             weekday: startDate.getDay(),
             dateString: getDateString(startDate, true),
             isToday: getDateString(startDate, true) == today,
+            isDisabled: isDisabled,
           };
           row.push(dateObj);
           if (row.length >= 7) {
@@ -192,16 +285,15 @@ export default defineComponent({
     });
     watch(selectedValue, (value, prevValue) => {
       if (value != "") {
-        let re = /^[0-9]{1,4}\/([1-9]|0[1-9]|1[0-2])\/([1-9]|0[1-9]|[12][0-9]|3[01])$/;
         let result = "";
-        if (re.test(value)) {
+        if (dateFormatRex.test(value)) {
           result = getDateString(new Date(value), false);
         } else {
           result = prevValue;
         }
         selectedValue.value = result;
       }
-      emit('value-changed', value);
+      emit("value-changed", value);
     });
     watch(
       () => datepicker.show,
@@ -218,25 +310,48 @@ export default defineComponent({
     );
 
     const prevMonth = () => {
-      if (datepicker.month == 1) {
-        datepicker.month = 12;
-        datepicker.year--;
-      } else {
-        datepicker.month--;
+      let tempPrevYear =
+        datepicker.month == 1 ? datepicker.year - 1 : datepicker.year;
+      let tempPrevMonth = datepicker.month == 1 ? 12 : datepicker.month - 1;
+      if (datepicker.hasRange) {
+        let fromDate = new Date(props.from);
+        if (tempPrevYear < fromDate.getFullYear()) {
+          return false;
+        }
+        if (
+          tempPrevYear == fromDate.getFullYear() &&
+          tempPrevMonth < fromDate.getMonth() + 1
+        ) {
+          return false;
+        }
       }
+      datepicker.year = tempPrevYear;
+      datepicker.month = tempPrevMonth;
     };
 
     const nextMonth = () => {
-      if (datepicker.month == 12) {
-        datepicker.month = 1;
-        datepicker.year++;
-      } else {
-        datepicker.month++;
+      let tempNextYear =
+        datepicker.month == 12 ? datepicker.year + 1 : datepicker.year;
+      let tempNextMonth = datepicker.month == 12 ? 1 : datepicker.month + 1;
+      if (datepicker.hasRange) {
+        let toDate = new Date(props.to);
+        if (tempNextYear > toDate.getFullYear()) {
+          return false;
+        }
+        if (
+          tempNextYear == toDate.getFullYear() &&
+          tempNextMonth > toDate.getMonth() + 1
+        ) {
+          return false;
+        }
       }
+      datepicker.year = tempNextYear;
+      datepicker.month = tempNextMonth;
     };
     const selectToday = () => {
       let today = new Date();
-      datepicker.year = parseInt(today.getFullYear()) - parseInt(props.yearMinus);
+      datepicker.year =
+        parseInt(today.getFullYear()) - parseInt(props.yearMinus);
       datepicker.month = today.getMonth() + 1;
       selectedValue.value = getDateString(today, true);
       datepicker.show = false;

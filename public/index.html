@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>vue3-table-lite</title>
+    <title>vue3-datepicker-lite</title>
     
     <style>
         body {
@@ -151,6 +151,8 @@
   :class-attr=&quot;datepickerSetting.class&quot;
   :value-attr=&quot;datepickerSetting.value&quot;
   :year-minus=&quot;datepickerSetting.yearMinus&quot;
+  :from=&quot;datepickerSetting.fromDate&quot;
+  :to=&quot;datepickerSetting.toDate&quot;
   :locale=&quot;datepickerSetting.locale&quot;
   @value-changed=&quot;datepickerSetting.changeEvent&quot;
 /&gt;
@@ -165,8 +167,10 @@ const datepickerSetting = {
   id: "birthday",
   name: "birthday",
   class: "myDateInput",
-  value: "109/10/01",
-  yearMinus: "1911",
+  value: "2020/10/01",
+  yearMinus: 0,
+  fromDate: "2010/02/10",
+  toDate: "2030/12/10",
   locale: {
     weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     todayBtn: "Today",

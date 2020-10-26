@@ -6,6 +6,8 @@
     :value-attr="datepickerSetting.value"
     :locale="datepickerSetting.locale"
     :year-minus="datepickerSetting.yearMinus"
+    :from="datepickerSetting.fromDate"
+    :to="datepickerSetting.toDate"
     @value-changed="datepickerSetting.changeEvent"
   ></datepicker-lite>
 </template>
@@ -24,8 +26,10 @@ export default defineComponent({
       id: "birthday",
       name: "birthday",
       class: "myDateInput",
-      value: "109/10/01",
-      yearMinus: "1911",
+      value: "2020/10/01",
+      yearMinus: 0,
+      fromDate: "2020/02/10",
+      toDate: "2021/02/10",
       locale: {
         weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
         todayBtn: "Today",

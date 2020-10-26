@@ -350,9 +350,24 @@ export default defineComponent({
     };
     const selectToday = () => {
       let today = new Date();
-      datepicker.year =
-        parseInt(today.getFullYear()) - parseInt(props.yearMinus);
-      datepicker.month = today.getMonth() + 1;
+      let tempYear = parseInt(today.getFullYear()) - parseInt(props.yearMinus);
+      let tempMonth = today.getMonth() + 1;
+      if (datepicker.hasRange) {
+        let fromDate = new Date(props.from);
+        let toDate = new Date(props.to);
+        if (today < fromDate) {
+          tempYear = fromDate.getFullYear();
+          tempMonth = fromDate.getMonth() + 1;
+          today = fromDate;
+        }
+        if (today > toDate) {
+          tempYear = toDate.getFullYear();
+          tempMonth = toDate.getMonth() + 1;
+          today = toDate;
+        }
+      }
+      datepicker.year = tempYear;
+      datepicker.month = tempMonth;
       selectedValue.value = getDateString(today, true);
       datepicker.show = false;
     };

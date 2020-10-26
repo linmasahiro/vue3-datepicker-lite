@@ -19,8 +19,10 @@ A simple datepicker component support Vue3.0!!
         :name-attr="datepickerSetting.name"
         :class-attr="datepickerSetting.class"
         :value-attr="datepickerSetting.value"
-        :locale="datepickerSetting.locale"
         :year-minus="datepickerSetting.yearMinus"
+        :from="datepickerSetting.fromDate"
+        :to="datepickerSetting.toDate"
+        :locale="datepickerSetting.locale"
         @value-changed="datepickerSetting.changeEvent"
     ></datepicker-lite>
 
@@ -30,7 +32,9 @@ A simple datepicker component support Vue3.0!!
       name: "birthday",
       class: "myDateInput",
       value: "2020/10/01",
-      yearMinus: "1911",
+      yearMinus: 0,
+      fromDate: "2020/02/10",
+      toDate: "2021/02/10",
       locale: {
         weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
         todayBtn: "Today",

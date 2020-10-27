@@ -124,6 +124,12 @@ export default defineComponent({
       type: String,
       default: "",
     },
+    disabledDate: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
     locale: {
       type: Object,
       default: () => {
@@ -263,6 +269,10 @@ export default defineComponent({
             ) {
               isDisabled = true;
             }
+          }
+          if (!isDisabled && props.disabledDate.length > 0) {
+            isDisabled =
+              props.disabledDate.indexOf(getDateString(startDate, true)) >= 0;
           }
           let dateObj = {
             year: yyyy,

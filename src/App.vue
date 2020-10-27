@@ -8,6 +8,7 @@
     :year-minus="datepickerSetting.yearMinus"
     :from="datepickerSetting.fromDate"
     :to="datepickerSetting.toDate"
+    :disabled-date="datepickerSetting.disabledDate"
     @value-changed="datepickerSetting.changeEvent"
   ></datepicker-lite>
 </template>
@@ -30,6 +31,13 @@ export default defineComponent({
       yearMinus: 0,
       fromDate: "2020/02/10",
       toDate: "2021/02/10",
+      disabledDate: [
+        "2020/10/02",
+        "2020/10/03",
+        "2020/10/04",
+        "2020/10/05",
+        "2020/10/06",
+      ],
       locale: {
         weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
         todayBtn: "Today",

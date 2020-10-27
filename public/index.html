@@ -153,6 +153,7 @@
   :year-minus=&quot;datepickerSetting.yearMinus&quot;
   :from=&quot;datepickerSetting.fromDate&quot;
   :to=&quot;datepickerSetting.toDate&quot;
+  :disabled-date=&quot;datepickerSetting.disabledDate&quot;
   :locale=&quot;datepickerSetting.locale&quot;
   @value-changed=&quot;datepickerSetting.changeEvent&quot;
 /&gt;
@@ -171,6 +172,13 @@ const datepickerSetting = {
   yearMinus: 0,
   fromDate: "2010/02/10",
   toDate: "2030/12/10",
+  disabledDate: [
+    "2020/10/02",
+    "2020/10/03",
+    "2020/10/04",
+    "2020/10/05",
+    "2020/10/06",
+  ],
   locale: {
     weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     todayBtn: "Today",

@@ -11,6 +11,18 @@
     :disabled-date="datepickerSetting.disabledDate"
     @value-changed="datepickerSetting.changeEvent"
   ></datepicker-lite>
+  <datepicker-lite
+    :id-attr="datepickerSetting2.id"
+    :name-attr="datepickerSetting2.name"
+    :class-attr="datepickerSetting2.class"
+    :value-attr="datepickerSetting2.value"
+    :locale="datepickerSetting2.locale"
+    :year-minus="datepickerSetting2.yearMinus"
+    :from="datepickerSetting2.fromDate"
+    :to="datepickerSetting2.toDate"
+    :disabled-date="datepickerSetting2.disabledDate"
+    @value-changed="datepickerSetting2.changeEvent"
+  ></datepicker-lite>
 </template>
 
 <script>
@@ -39,6 +51,34 @@ export default defineComponent({
         "2020/10/06",
       ],
       locale: {
+        format: "YYYY/MM/DD",
+        weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        todayBtn: "Today",
+        clearBtn: "Clear",
+        closeBtn: "Close",
+      },
+      changeEvent: (value) => {
+        console.log(value + " selected!");
+      }
+    }
+
+    const datepickerSetting2 = {
+      id: "birthday",
+      name: "birthday",
+      class: "myDateInput",
+      value: "01/10/2020",
+      yearMinus: 0,
+      fromDate: "10/02/2020",
+      toDate: "10/02/2021",
+      disabledDate: [
+        "02/10/2020",
+        "03/10/2020",
+        "04/10/2020",
+        "05/10/2020",
+        "06/10/2020",
+      ],
+      locale: {
+        format: "DD-MM-YYYY",
         weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
         todayBtn: "Today",
         clearBtn: "Clear",
@@ -50,7 +90,8 @@ export default defineComponent({
     }
 
     return {
-      datepickerSetting
+      datepickerSetting,
+      datepickerSetting2
     };
   },
 });

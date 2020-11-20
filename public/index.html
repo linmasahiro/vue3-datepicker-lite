@@ -180,6 +180,35 @@ const datepickerSetting = {
     "2020/10/06",
   ],
   locale: {
+    format: "YYYY/MM/DD"
+    weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    todayBtn: "Today",
+    clearBtn: "Clear",
+    closeBtn: "Close",
+  },
+  changeEvent: (value) => {
+    console.log(value + " selected!");
+  }
+}
+
+// if u want to change date format
+const datepickerSetting2 = {
+  id: "birthday",
+  name: "birthday",
+  class: "myDateInput",
+  value: "01/10/2020",
+  yearMinus: 0,
+  fromDate: "10/02/2020",
+  toDate: "10/02/2021",
+  disabledDate: [
+    "02/10/2020",
+    "03/10/2020",
+    "04/10/2020",
+    "05/10/2020",
+    "06/10/2020",
+  ],
+  locale: {
+    format: "DD-MM-YYYY",
     weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     todayBtn: "Today",
     clearBtn: "Clear",

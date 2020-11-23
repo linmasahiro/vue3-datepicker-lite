@@ -10,6 +10,7 @@
     :to="datepickerSetting.toDate"
     :disabled-date="datepickerSetting.disabledDate"
     @value-changed="datepickerSetting.changeEvent"
+    :disableInput="datepickerSetting.disableInput"
   ></datepicker-lite>
   <datepicker-lite
     :id-attr="datepickerSetting2.id"
@@ -22,6 +23,7 @@
     :to="datepickerSetting2.toDate"
     :disabled-date="datepickerSetting2.disabledDate"
     @value-changed="datepickerSetting2.changeEvent"
+    :disableInput="datepickerSetting2.disableInput"
   ></datepicker-lite>
 </template>
 
@@ -59,7 +61,8 @@ export default defineComponent({
       },
       changeEvent: (value) => {
         console.log(value + " selected!");
-      }
+      },
+      disableInput: false,
     }
 
     const datepickerSetting2 = {
@@ -86,7 +89,8 @@ export default defineComponent({
       },
       changeEvent: (value) => {
         console.log(value + " selected!");
-      }
+      },
+      disableInput: false,
     }
 
     return {

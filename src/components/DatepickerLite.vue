@@ -7,6 +7,7 @@
       :class="classAttr"
       v-model="selectedValue"
       @focus="datepicker.show = true"
+      :disabled="disableInput"
     />
     <div v-if="datepicker.show" class="picker__mask" @click="close"></div>
     <div v-if="datepicker.show" class="picker__frame">
@@ -141,6 +142,10 @@ export default defineComponent({
           closeBtn: "Close",
         };
       },
+    },
+    disableInput: {
+      type: Boolean,
+      default: false,
     },
   },
   setup(props, { emit }) {

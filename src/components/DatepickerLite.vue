@@ -359,7 +359,6 @@ export default defineComponent({
         let result = "";
         if (formatSetting.formatRegexp.test(value)) {
           let temp = value.match(formatSetting.formatRegexp);
-          console.log(temp)
           result = formatDate(new Date(temp[formatSetting.yearIndex], (temp[formatSetting.monthIndex] - 1), temp[formatSetting.dateIndex]), false);
         } else {
           result = prevValue;

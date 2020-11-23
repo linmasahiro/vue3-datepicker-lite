@@ -44,6 +44,7 @@ A simple datepicker component support Vue3.0!!
         "2020/10/06",
       ],
       locale: {
+        format: "YYYY/MM/DD"
         weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
         todayBtn: "Today",
         clearBtn: "Clear",
@@ -53,3 +54,6 @@ A simple datepicker component support Vue3.0!!
         console.log(value + " selected!");
       }
     }
+
+### release
+    ver 1.6.0 : supported date format

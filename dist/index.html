@@ -99,9 +99,9 @@
           background-color: #f7f7f9;
           border: 1px solid #e1e1e8;
           white-space: nowrap;
-      }</style><link href="./css/app.7900c743.css" rel="preload" as="style"><link href="./js/app.f06f35b6.js" rel="preload" as="script"><link href="./js/chunk-vendors.a33c4bbb.js" rel="preload" as="script"><link href="./css/app.7900c743.css" rel="stylesheet"></head><body><div class="container"><div class="hero-unit"><h1 id="home">vue3-datepicker-lite</h1><p>A very simple datepicker component for vue3.0!</p><hr><p><a href="https://github.com/linmasahiro/vue3-datepicker-lite">Github</a></p><p><iframe src="https://ghbtns.com/github-btn.html?user=linmasahiro&repo=vue3-datepicker-lite&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe></p></div><h2 id="demo">Demo</h2><p>Example Sample Demo</p><div><div id="app"></div></div><br><h2 id="info">Get Start</h2><div><ol><li>Use NPM<ol><li><pre><code>npm install vue3-datepicker-lite --save</code></pre></li><li><p>add to your project</p><pre><code>import DatepickerLite from 'vue3-datepicker-lite'</code></pre></li><li><p>set component attribuite</p><pre>
+      }</style><link href="./css/app.5c36cb53.css" rel="preload" as="style"><link href="./js/app.ce8ef282.js" rel="preload" as="script"><link href="./js/chunk-vendors.a33c4bbb.js" rel="preload" as="script"><link href="./css/app.5c36cb53.css" rel="stylesheet"></head><body><div class="container"><div class="hero-unit"><h1 id="home">vue3-datepicker-lite</h1><p>A very simple datepicker component for vue3.0!</p><hr><p><a href="https://github.com/linmasahiro/vue3-datepicker-lite">Github</a></p><p><iframe src="https://ghbtns.com/github-btn.html?user=linmasahiro&repo=vue3-datepicker-lite&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe></p></div><h2 id="demo">Demo</h2><p>Example Sample Demo</p><div><div id="app"></div></div><br><h2 id="info">Get Start</h2><div><ol><li>Use NPM<ol><li><pre><code>npm install vue3-datepicker-lite --save</code></pre></li><li><p>add to your project</p><pre><code>import DatepickerLite from 'vue3-datepicker-lite'</code></pre></li><li><p>set component attribuite</p><pre>
                             <code>
-&lt;datepicker-lite 
+&lt;datepicker-lite
   :id-attr=&quot;datepickerSetting.id&quot;
   :name-attr=&quot;datepickerSetting.name&quot;
   :class-attr=&quot;datepickerSetting.class&quot;
@@ -112,6 +112,7 @@
   :disabled-date=&quot;datepickerSetting.disabledDate&quot;
   :locale=&quot;datepickerSetting.locale&quot;
   @value-changed=&quot;datepickerSetting.changeEvent&quot;
+  :disableInput=&quot;datepickerSetting.disableInput&quot;
 /&gt;
                             </code>
                         </pre></li><li><p>sample setting data:</p><pre>
@@ -140,7 +141,8 @@ const datepickerSetting = {
   },
   changeEvent: (value) => {
     console.log(value + " selected!");
-  }
+  },
+  disableInput: false,
 }
 
 // if u want to change date format
@@ -168,7 +170,8 @@ const datepickerSetting2 = {
   },
   changeEvent: (value) => {
     console.log(value + " selected!");
-  }
+  },
+  disableInput: false,
 }
                             </code>
-                        </pre></li></ol></li></ol></div></div><div id="footer"><div class="container"><p class="muted credit">Copyright © 2020 <a href="https://github.com/linmasahiro" target="_blank">Lin</a> All Rights Reserved.</p></div></div><script src="./js/chunk-vendors.a33c4bbb.js"></script><script src="./js/app.f06f35b6.js"></script></body></html>
+                        </pre></li></ol></li></ol></div></div><div id="footer"><div class="container"><p class="muted credit">Copyright © 2020 <a href="https://github.com/linmasahiro" target="_blank">Lin</a> All Rights Reserved.</p></div></div><script src="./js/chunk-vendors.a33c4bbb.js"></script><script src="./js/app.ce8ef282.js"></script></body></html>

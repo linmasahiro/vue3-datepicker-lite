@@ -25,6 +25,7 @@ A simple datepicker component support Vue3.0!!
         :disabled-date="datepickerSetting.disabledDate"
         :locale="datepickerSetting.locale"
         @value-changed="datepickerSetting.changeEvent"
+        :disableInput="datepickerSetting.disableInput"
     ></datepicker-lite>
 
 ### sample data
@@ -52,8 +53,9 @@ A simple datepicker component support Vue3.0!!
       },
       changeEvent: (value) => {
         console.log(value + " selected!");
-      }
+      },
+      disableInput: false,
     }
 
 ### release
-    ver 1.6.0 : supported date format
+    ver 1.7.0 : supported disable input

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>vue3-datepicker-lite</title>
-    
+
     <style>
         body {
             padding-top: 10px;
@@ -145,7 +145,7 @@
                         <p>set component attribuite</p>
                         <pre>
                             <code>
-&lt;datepicker-lite 
+&lt;datepicker-lite
   :id-attr=&quot;datepickerSetting.id&quot;
   :name-attr=&quot;datepickerSetting.name&quot;
   :class-attr=&quot;datepickerSetting.class&quot;
@@ -156,6 +156,7 @@
   :disabled-date=&quot;datepickerSetting.disabledDate&quot;
   :locale=&quot;datepickerSetting.locale&quot;
   @value-changed=&quot;datepickerSetting.changeEvent&quot;
+  :disableInput=&quot;datepickerSetting.disableInput&quot;
 /&gt;
                             </code>
                         </pre>
@@ -188,7 +189,8 @@ const datepickerSetting = {
   },
   changeEvent: (value) => {
     console.log(value + " selected!");
-  }
+  },
+  disableInput: false,
 }
 
 // if u want to change date format
@@ -216,7 +218,8 @@ const datepickerSetting2 = {
   },
   changeEvent: (value) => {
     console.log(value + " selected!");
-  }
+  },
+  disableInput: false,
 }
                             </code>
                         </pre>

@@ -381,6 +381,26 @@ export default defineComponent({
         }
       }
     );
+    watch(
+      () => props.valueAttr,
+      (value, prevValue) => {
+        if (value != "" && value != prevValue) {
+          let result = "";
+          if (formatSetting.formatRegexp.test(value)) {
+            let temp = value.match(formatSetting.formatRegexp);
+            result = formatDate(
+              new Date(
+                temp[formatSetting.yearIndex],
+                temp[formatSetting.monthIndex] - 1,
+                temp[formatSetting.dateIndex]
+              ),
+              false
+            );
+            selectedValue.value = result;
+          }
+        }
+      }
+    );
 
     const prevMonth = () => {
       let tempPrevYear =

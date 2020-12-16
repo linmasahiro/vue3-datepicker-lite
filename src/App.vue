@@ -4,6 +4,7 @@
     :name-attr="datepickerSetting.name"
     :class-attr="datepickerSetting.class"
     :value-attr="datepickerSetting.value"
+    :placeholder-attr="datepickerSetting.placeholder"
     :locale="datepickerSetting.locale"
     :year-minus="datepickerSetting.yearMinus"
     :from="datepickerSetting.fromDate"
@@ -17,6 +18,7 @@
     :name-attr="datepickerSetting2.name"
     :class-attr="datepickerSetting2.class"
     :value-attr="datepickerSetting2.value"
+    :placeholder-attr="datepickerSetting2.placeholder"
     :locale="datepickerSetting2.locale"
     :year-minus="datepickerSetting2.yearMinus"
     :from="datepickerSetting2.fromDate"
@@ -42,6 +44,7 @@ export default defineComponent({
       name: "birthday",
       class: "myDateInput",
       value: "2020/10/01",
+      placeholder: "Select",
       yearMinus: 0,
       fromDate: "2020/02/10",
       toDate: "2021/02/10",
@@ -70,6 +73,7 @@ export default defineComponent({
       name: "birthday",
       class: "myDateInput",
       value: "01/10/2020",
+      placeholder: "Select",
       yearMinus: 0,
       fromDate: "10/02/2020",
       toDate: "10/02/2021",

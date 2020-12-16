@@ -19,6 +19,7 @@ A simple datepicker component support Vue3.0!!
         :name-attr="datepickerSetting.name"
         :class-attr="datepickerSetting.class"
         :value-attr="datepickerSetting.value"
+        :placeholder-attr="datepickerSetting.placeholder"
         :year-minus="datepickerSetting.yearMinus"
         :from="datepickerSetting.fromDate"
         :to="datepickerSetting.toDate"
@@ -34,6 +35,7 @@ A simple datepicker component support Vue3.0!!
       name: "birthday",
       class: "myDateInput",
       value: "2020/10/01",
+      placeholder: "Select",
       yearMinus: 0,
       fromDate: "2020/02/10",
       toDate: "2021/02/10",
@@ -58,6 +60,7 @@ A simple datepicker component support Vue3.0!!
     }
 
 ### release
+    ver 1.8.1 : supported placeholder
     ver 1.8.0 : supported value-attr responsive
     ver 1.7.0 : supported disable input
     ver 1.6.0 : supported date format

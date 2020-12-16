@@ -5,6 +5,7 @@
       :id="idAttr"
       :name="nameAttr"
       :class="classAttr"
+      :placeholder="placeholderAttr"
       v-model="selectedValue"
       @focus="datepicker.show = true"
       :disabled="disableInput"
@@ -110,6 +111,10 @@ export default defineComponent({
       type: String,
     },
     valueAttr: {
+      type: String,
+      default: "",
+    },
+    placeholderAttr: {
       type: String,
       default: "",
     },

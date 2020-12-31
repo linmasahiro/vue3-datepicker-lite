@@ -389,7 +389,11 @@ export default defineComponent({
     watch(
       () => props.valueAttr,
       (value, prevValue) => {
-        if (value != "" && value != prevValue) {
+        if (value == "") {
+          selectedValue.value = "";
+          return false;
+        }
+        if (value != prevValue) {
           let result = "";
           if (formatSetting.formatRegexp.test(value)) {
             let temp = value.match(formatSetting.formatRegexp);

@@ -60,6 +60,7 @@ A simple datepicker component support Vue3.0!!
     }
 
 ### release
+    ver 1.8.2 : fixed valueAttr can not to be null bug
     ver 1.8.1 : supported placeholder
     ver 1.8.0 : supported value-attr responsive
     ver 1.7.0 : supported disable input

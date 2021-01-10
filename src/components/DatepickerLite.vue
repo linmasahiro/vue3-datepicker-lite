@@ -337,8 +337,15 @@ export default defineComponent({
             }
           }
           if (!isDisabled && props.disabledDate.length > 0) {
-            isDisabled =
-              props.disabledDate.indexOf(formatDate(startDate, true)) >= 0;
+            let checkKey = props.disabledDate.findIndex(rawDate => {
+              let tmpData = rawDate.match(formatSetting.formatRegexp);
+              let tmpYear = tmpData[formatSetting.yearIndex];
+              let tmpMonth = tmpData[formatSetting.monthIndex];
+              let tmpDate = tmpData[formatSetting.dateIndex];
+              let modifiedDate = formatDate(new Date(tmpYear + "/" + tmpMonth +"/" + tmpDate), true);
+              return modifiedDate == formatDate(startDate, true);
+            });
+            isDisabled = (checkKey >= 0) ? true : false;
           }
           let dateObj = {
             year: yyyy,

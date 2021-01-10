@@ -319,7 +319,7 @@ export default defineComponent({
             let toDate = props.to.match(formatSetting.formatRegexp);
             if (
               yyyy < fromDate[formatSetting.yearIndex] ||
-              (yyyy == fromDate[formatSetting.yearIndex] && mm < toDate[formatSetting.monthIndex]) ||
+              (yyyy == fromDate[formatSetting.yearIndex] && mm < fromDate[formatSetting.monthIndex]) ||
               (yyyy == fromDate[formatSetting.yearIndex] &&
                 mm == fromDate[formatSetting.monthIndex] &&
                 dd < fromDate[formatSetting.dateIndex])

@@ -17,22 +17,14 @@
           <div class="picker__header">
             <div class="picker__month">
               <select v-model="datepicker.month">
-                <option
-                  v-for="(n, i) in datepicker.monthList"
-                  :key="i"
-                  :value="n"
-                >
+                <option v-for="(n, i) in datepicker.monthList" :key="i" :value="n">
                   {{ n }}
                 </option>
               </select>
             </div>
             <div class="picker__year">
               <select v-model="datepicker.year">
-                <option
-                  v-for="(val, i) in datepicker.years"
-                  :key="i"
-                  :value="val"
-                >
+                <option v-for="(val, i) in datepicker.years" :key="i" :value="val">
                   {{ val }}
                 </option>
               </select>
@@ -47,7 +39,14 @@
                   v-for="(val, i) in locale.weekday"
                   :key="i"
                   class="picker__weekday"
-                  :class="{ picker__weekend: i == 0 || i == 6 }"
+                  :class="{
+                    picker__weekend:
+                      locale.startsWeeks == 0 ||
+                      locale.startsWeeks < 0 ||
+                      locale.startsWeeks > 6
+                        ? i == 0 || i == 6
+                        : i == 6 - locale.startsWeeks || i == 7 - locale.startsWeeks,
+                  }"
                 >
                   {{ val }}
                 </th>
@@ -75,11 +74,7 @@
             </tbody>
           </table>
           <div class="picker__footer">
-            <button
-              class="picker__button--today"
-              type="button"
-              @click="selectToday"
-            >
+            <button class="picker__button--today" type="button" @click="selectToday">
               {{ locale.todayBtn }}
             </button>
             <button class="picker__button--clear" type="button" @click="clear">
@@ -142,6 +137,7 @@ export default defineComponent({
         return {
           format: "YYYY/MM/DD",
           weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+          startsWeeks: 0,
           todayBtn: "Today",
           clearBtn: "Clear",
           closeBtn: "Close",
@@ -159,7 +155,7 @@ export default defineComponent({
       formatRegexp: new RegExp("([0-9]{4})/([0-9]{2})/([0-9]{2})"),
       yearIndex: 1,
       monthIndex: 3,
-      dateIndex: 5
+      dateIndex: 5,
     });
     let dateRegexp = new RegExp(
       "([Y]{4}|[y]{4}|[M]{2}|[m]{2}|[D]{2}|[d]{2})([^ a-zA-Z])([Y]{4}|[y]{4}|[M]{2}|[m]{2}|[D]{2}|[d]{2})([^ a-zA-Z])([Y]{4}|[y]{4}|[M]{2}|[m]{2}|[D]{2}|[d]{2})"
@@ -211,19 +207,13 @@ export default defineComponent({
       }
       format = format.replace(/yyyy/g, yyyy);
       format = format.replace(/YYYY/g, yyyy);
-      format = format.replace(
-        /MM/g,
-        ("0" + (dateObj.getMonth() + 1)).slice(-2)
-      );
+      format = format.replace(/MM/g, ("0" + (dateObj.getMonth() + 1)).slice(-2));
       format = format.replace(/dd/g, ("0" + dateObj.getDate()).slice(-2));
       format = format.replace(/DD/g, ("0" + dateObj.getDate()).slice(-2));
       format = format.replace(/HH/g, ("0" + dateObj.getHours()).slice(-2));
       format = format.replace(/mm/g, ("0" + dateObj.getMinutes()).slice(-2));
       format = format.replace(/ss/g, ("0" + dateObj.getSeconds()).slice(-2));
-      format = format.replace(
-        /SSS/g,
-        ("00" + dateObj.getMilliseconds()).slice(-3)
-      );
+      format = format.replace(/SSS/g, ("00" + dateObj.getMilliseconds()).slice(-3));
       return format;
     };
 
@@ -297,11 +287,18 @@ export default defineComponent({
         let lastDate = new Date(year, month, 0);
         let startDateWeekday = startDate.getDay();
         let lastDateWeekday = lastDate.getDay();
-        if (startDateWeekday != 0) {
-          startDate.setDate(startDate.getDate() - startDateWeekday);
+        let startsWeeks =
+          props.locale.startsWeeks < 0 || props.locale.startsWeeks > 6
+            ? 0
+            : props.locale.startsWeeks;
+        if (startDateWeekday != startsWeeks) {
+          startDate.setDate(startDate.getDate() - (startDateWeekday - startsWeeks));
+          if (startDateWeekday - startsWeeks < 0) {
+            startDate.setDate(startDate.getDate() - 7);
+          }
         }
-        if (lastDateWeekday != 6) {
-          let padding = 6 - lastDateWeekday;
+        if (lastDateWeekday != startsWeeks + 6) {
+          let padding = startsWeeks + 6 - lastDateWeekday;
           lastDate.setDate(lastDate.getDate() + padding);
         }
         let days = [];
@@ -310,8 +307,7 @@ export default defineComponent({
         let isDisabled = false;
         while (startDate.getTime() - lastDate.getTime() <= 0) {
           isDisabled = false;
-          let yyyy =
-            parseInt(startDate.getFullYear()) - parseInt(props.yearMinus);
+          let yyyy = parseInt(startDate.getFullYear()) - parseInt(props.yearMinus);
           let mm = startDate.getMonth() + 1;
           let dd = startDate.getDate();
           if (datepicker.hasRange) {
@@ -319,7 +315,8 @@ export default defineComponent({
             let toDate = props.to.match(formatSetting.formatRegexp);
             if (
               yyyy < fromDate[formatSetting.yearIndex] ||
-              (yyyy == fromDate[formatSetting.yearIndex] && mm < fromDate[formatSetting.monthIndex]) ||
+              (yyyy == fromDate[formatSetting.yearIndex] &&
+                mm < fromDate[formatSetting.monthIndex]) ||
               (yyyy == fromDate[formatSetting.yearIndex] &&
                 mm == fromDate[formatSetting.monthIndex] &&
                 dd < fromDate[formatSetting.dateIndex])
@@ -328,7 +325,8 @@ export default defineComponent({
             }
             if (
               yyyy > toDate[formatSetting.yearIndex] ||
-              (yyyy == toDate[formatSetting.yearIndex] && mm > toDate[formatSetting.monthIndex]) ||
+              (yyyy == toDate[formatSetting.yearIndex] &&
+                mm > toDate[formatSetting.monthIndex]) ||
               (yyyy == toDate[formatSetting.yearIndex] &&
                 mm == toDate[formatSetting.monthIndex] &&
                 dd > toDate[formatSetting.dateIndex])
@@ -337,15 +335,18 @@ export default defineComponent({
             }
           }
           if (!isDisabled && props.disabledDate.length > 0) {
-            let checkKey = props.disabledDate.findIndex(rawDate => {
+            let checkKey = props.disabledDate.findIndex((rawDate) => {
               let tmpData = rawDate.match(formatSetting.formatRegexp);
               let tmpYear = tmpData[formatSetting.yearIndex];
               let tmpMonth = tmpData[formatSetting.monthIndex];
               let tmpDate = tmpData[formatSetting.dateIndex];
-              let modifiedDate = formatDate(new Date(tmpYear + "/" + tmpMonth +"/" + tmpDate), true);
+              let modifiedDate = formatDate(
+                new Date(tmpYear + "/" + tmpMonth + "/" + tmpDate),
+                true
+              );
               return modifiedDate == formatDate(startDate, true);
             });
-            isDisabled = (checkKey >= 0) ? true : false;
+            isDisabled = checkKey >= 0 ? true : false;
           }
           let dateObj = {
             year: yyyy,
@@ -371,7 +372,14 @@ export default defineComponent({
         let result = "";
         if (formatSetting.formatRegexp.test(value)) {
           let temp = value.match(formatSetting.formatRegexp);
-          result = formatDate(new Date(temp[formatSetting.yearIndex], (temp[formatSetting.monthIndex] - 1), temp[formatSetting.dateIndex]), false);
+          result = formatDate(
+            new Date(
+              temp[formatSetting.yearIndex],
+              temp[formatSetting.monthIndex] - 1,
+              temp[formatSetting.dateIndex]
+            ),
+            false
+          );
         } else {
           result = prevValue;
         }
@@ -386,7 +394,11 @@ export default defineComponent({
           let thisMonth = new Date();
           if (selectedValue.value) {
             let temp = selectedValue.value.match(formatSetting.formatRegexp);
-            thisMonth = new Date(temp[formatSetting.yearIndex], (temp[formatSetting.monthIndex] - 1), temp[formatSetting.dateIndex]);
+            thisMonth = new Date(
+              temp[formatSetting.yearIndex],
+              temp[formatSetting.monthIndex] - 1,
+              temp[formatSetting.dateIndex]
+            );
           }
           datepicker.year = thisMonth.getFullYear();
           datepicker.month = thisMonth.getMonth() + 1;
@@ -419,8 +431,7 @@ export default defineComponent({
     );
 
     const prevMonth = () => {
-      let tempPrevYear =
-        datepicker.month == 1 ? datepicker.year - 1 : datepicker.year;
+      let tempPrevYear = datepicker.month == 1 ? datepicker.year - 1 : datepicker.year;
       let tempPrevMonth = datepicker.month == 1 ? 12 : datepicker.month - 1;
       if (datepicker.hasRange) {
         let fromDate = props.from.match(formatSetting.formatRegexp);
@@ -439,8 +450,7 @@ export default defineComponent({
     };
 
     const nextMonth = () => {
-      let tempNextYear =
-        datepicker.month == 12 ? datepicker.year + 1 : datepicker.year;
+      let tempNextYear = datepicker.month == 12 ? datepicker.year + 1 : datepicker.year;
       let tempNextMonth = datepicker.month == 12 ? 1 : datepicker.month + 1;
       if (datepicker.hasRange) {
         let toDate = props.to.match(formatSetting.formatRegexp);
@@ -528,9 +538,8 @@ export default defineComponent({
   border: 1px solid;
   background-color: white;
   border-radius: 10px;
-  box-shadow: 3px 3px 15px rgba(18, 47, 61, 0.5),
-    -3px -3px 15px rgba(248, 253, 255, 0.9), inset 3px 3px 15px transparent,
-    inset -3px -3px 15px transparent;
+  box-shadow: 3px 3px 15px rgba(18, 47, 61, 0.5), -3px -3px 15px rgba(248, 253, 255, 0.9),
+    inset 3px 3px 15px transparent, inset -3px -3px 15px transparent;
 }
 
 .picker__box {

@@ -49,6 +49,7 @@ A simple datepicker component support Vue3.0!!
       locale: {
         format: "YYYY/MM/DD",
         weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        startsWeeks: 0,
         todayBtn: "Today",
         clearBtn: "Clear",
         closeBtn: "Close",
@@ -60,6 +61,7 @@ A simple datepicker component support Vue3.0!!
     }
 
 ### release
+    ver 1.8.4 : supported start weeks option
     ver 1.8.3 : fixed disabledDate not work bug
     ver 1.8.2 : fixed valueAttr can not to be null bug
     ver 1.8.1 : supported placeholder

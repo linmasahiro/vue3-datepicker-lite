@@ -58,6 +58,7 @@ export default defineComponent({
       locale: {
         format: "YYYY/MM/DD",
         weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        startsWeeks: 0,
         todayBtn: "Today",
         clearBtn: "Clear",
         closeBtn: "Close",
@@ -87,6 +88,7 @@ export default defineComponent({
       locale: {
         format: "DD-MM-YYYY",
         weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        startsWeeks: 0,
         todayBtn: "Today",
         clearBtn: "Clear",
         closeBtn: "Close",

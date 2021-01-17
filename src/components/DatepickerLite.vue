@@ -288,7 +288,7 @@ export default defineComponent({
         let startDateWeekday = startDate.getDay();
         let lastDateWeekday = lastDate.getDay();
         let startsWeeks =
-          props.locale.startsWeeks < 0 || props.locale.startsWeeks > 6
+          props.locale.startsWeeks < 0 || props.locale.startsWeeks > 6 || !props.locale.startsWeek
             ? 0
             : props.locale.startsWeeks;
         if (startDateWeekday != startsWeeks) {

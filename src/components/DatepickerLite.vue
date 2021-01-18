@@ -36,16 +36,16 @@
             <thead>
               <tr>
                 <th
-                  v-for="(val, i) in locale.weekday"
+                  v-for="(val, i) in modifiedLocale.weekday"
                   :key="i"
                   class="picker__weekday"
                   :class="{
                     picker__weekend:
-                      locale.startsWeeks == 0 ||
-                      locale.startsWeeks < 0 ||
-                      locale.startsWeeks > 6
+                      modifiedLocale.startsWeeks == 0 ||
+                      modifiedLocale.startsWeeks < 0 ||
+                      modifiedLocale.startsWeeks > 6
                         ? i == 0 || i == 6
-                        : i == 6 - locale.startsWeeks || i == 7 - locale.startsWeeks,
+                        : i == 6 - modifiedLocale.startsWeeks || i == 7 - modifiedLocale.startsWeeks,
                   }"
                 >
                   {{ val }}
@@ -75,13 +75,13 @@
           </table>
           <div class="picker__footer">
             <button class="picker__button--today" type="button" @click="selectToday">
-              {{ locale.todayBtn }}
+              {{ modifiedLocale.todayBtn }}
             </button>
             <button class="picker__button--clear" type="button" @click="clear">
-              {{ locale.clearBtn }}
+              {{ modifiedLocale.clearBtn }}
             </button>
             <button class="picker__button--close" type="button" @click="close">
-              {{ locale.closeBtn }}
+              {{ modifiedLocale.closeBtn }}
             </button>
           </div>
         </div>
@@ -150,8 +150,16 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    let modifiedLocale = Object.assign({
+      format: "YYYY/MM/DD",
+      weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      startsWeeks: 0,
+      todayBtn: "Today",
+      clearBtn: "Clear",
+      closeBtn: "Close",
+    }, props.locale);
     let formatSetting = reactive({
-      format: props.locale.format,
+      format: modifiedLocale.format,
       formatRegexp: new RegExp("([0-9]{4})/([0-9]{2})/([0-9]{2})"),
       yearIndex: 1,
       monthIndex: 3,
@@ -160,7 +168,7 @@ export default defineComponent({
     let dateRegexp = new RegExp(
       "([Y]{4}|[y]{4}|[M]{2}|[m]{2}|[D]{2}|[d]{2})([^ a-zA-Z])([Y]{4}|[y]{4}|[M]{2}|[m]{2}|[D]{2}|[d]{2})([^ a-zA-Z])([Y]{4}|[y]{4}|[M]{2}|[m]{2}|[D]{2}|[d]{2})"
     );
-    let dateFormatGroup = props.locale.format.match(dateRegexp);
+    let dateFormatGroup = modifiedLocale.format.match(dateRegexp);
     if (!dateFormatGroup) {
       formatSetting.format = "YYYY/MM/DD";
     }
@@ -288,9 +296,9 @@ export default defineComponent({
         let startDateWeekday = startDate.getDay();
         let lastDateWeekday = lastDate.getDay();
         let startsWeeks =
-          props.locale.startsWeeks < 0 || props.locale.startsWeeks > 6 || !props.locale.startsWeek
+          modifiedLocale.startsWeeks < 0 || modifiedLocale.startsWeeks > 6
             ? 0
-            : props.locale.startsWeeks;
+            : modifiedLocale.startsWeeks;
         if (startDateWeekday != startsWeeks) {
           startDate.setDate(startDate.getDate() - (startDateWeekday - startsWeeks));
           if (startDateWeekday - startsWeeks < 0) {
@@ -505,6 +513,7 @@ export default defineComponent({
     select(props.valueAttr);
 
     return {
+      modifiedLocale,
       selectedValue,
       datepicker,
       prevMonth,

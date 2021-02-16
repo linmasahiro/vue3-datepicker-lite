@@ -7,11 +7,11 @@
       :class="classAttr"
       :placeholder="placeholderAttr"
       v-model="selectedValue"
-      @focus="datepicker.show = true"
+      @focus="onFocusEvent"
       :disabled="disableInput"
     />
     <div v-if="datepicker.show" class="picker__mask" @click="close"></div>
-    <div v-if="datepicker.show" class="picker__frame">
+    <div v-if="datepicker.show" class="picker__frame" :class="{'picker__frame_up': needMoveToUp}">
       <div class="picker__warp">
         <div class="picker__box">
           <div class="picker__header">
@@ -509,6 +509,16 @@ export default defineComponent({
       selectedValue.value = value;
       datepicker.show = false;
     };
+    
+    const needMoveToUp = ref(false);
+    const onFocusEvent = (event) => {
+      let potisionY = event.target.getBoundingClientRect().y;
+      needMoveToUp.value = false;
+      if (window.innerHeight - potisionY <= 290) {
+        needMoveToUp.value = true;
+      }
+      datepicker.show = true;
+    }
 
     select(props.valueAttr);
 
@@ -522,6 +532,8 @@ export default defineComponent({
       select,
       clear,
       close,
+      needMoveToUp,
+      onFocusEvent,
     };
   },
 });
@@ -541,6 +553,10 @@ export default defineComponent({
 .picker__frame {
   position: absolute;
   z-index: 10001;
+}
+
+.picker__frame_up {
+  top: -300px;
 }
 
 .picker__warp {

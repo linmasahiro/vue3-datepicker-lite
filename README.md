@@ -61,6 +61,7 @@ A simple datepicker component support Vue3.0!!
     }
 
 ### release
+    ver 1.8.6 : fixed datepicker on window bottom will be over window height bug
     ver 1.8.5 : fixed locale attribute bug
     ver 1.8.4 : supported start weeks option
     ver 1.8.3 : fixed disabledDate not work bug

@@ -5,6 +5,7 @@
       :id="idAttr"
       :name="nameAttr"
       :class="classAttr"
+      :autocomplete="autocompleteAttr"
       :placeholder="placeholderAttr"
       v-model="selectedValue"
       @focus="onFocusEvent"
@@ -112,6 +113,10 @@ export default defineComponent({
     placeholderAttr: {
       type: String,
       default: "",
+    },
+    autocompleteAttr: {
+      type: String,
+      default: "off",
     },
     yearMinus: {
       type: Number,

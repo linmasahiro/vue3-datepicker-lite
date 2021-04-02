@@ -1,6 +1,14 @@
 <template>
   <div>
+    <button 
+      v-if="isButtonType"
+      :id="idAttr"
+      :name="nameAttr"
+      :class="classAttr"
+      @click="onFocusEvent"
+    >{{ selectedValue }}</button>
     <input
+      v-if="! isButtonType"
       type="text"
       :id="idAttr"
       :name="nameAttr"
@@ -12,7 +20,11 @@
       :disabled="disableInput"
     />
     <div v-if="datepicker.show" class="picker__mask" @click="close"></div>
-    <div v-if="datepicker.show" class="picker__frame" :class="{'picker__frame_up': needMoveToUp}">
+    <div
+      v-if="datepicker.show"
+      class="picker__frame"
+      :class="{ picker__frame_up: needMoveToUp }"
+    >
       <div class="picker__warp">
         <div class="picker__box">
           <div class="picker__header">
@@ -46,7 +58,8 @@
                       modifiedLocale.startsWeeks < 0 ||
                       modifiedLocale.startsWeeks > 6
                         ? i == 0 || i == 6
-                        : i == 6 - modifiedLocale.startsWeeks || i == 7 - modifiedLocale.startsWeeks,
+                        : i == 6 - modifiedLocale.startsWeeks ||
+                          i == 7 - modifiedLocale.startsWeeks,
                   }"
                 >
                   {{ val }}
@@ -118,6 +131,12 @@ export default defineComponent({
       type: String,
       default: "off",
     },
+    isButtonType: {
+      type: Boolean,
+      default: () => {
+        return false;
+      },
+    },
     yearMinus: {
       type: Number,
       default: 0,
@@ -155,14 +174,17 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    let modifiedLocale = Object.assign({
-      format: "YYYY/MM/DD",
-      weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-      startsWeeks: 0,
-      todayBtn: "Today",
-      clearBtn: "Clear",
-      closeBtn: "Close",
-    }, props.locale);
+    let modifiedLocale = Object.assign(
+      {
+        format: "YYYY/MM/DD",
+        weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        startsWeeks: 0,
+        todayBtn: "Today",
+        clearBtn: "Clear",
+        closeBtn: "Close",
+      },
+      props.locale
+    );
     let formatSetting = reactive({
       format: modifiedLocale.format,
       formatRegexp: new RegExp("([0-9]{4})/([0-9]{2})/([0-9]{2})"),
@@ -514,7 +536,7 @@ export default defineComponent({
       selectedValue.value = value;
       datepicker.show = false;
     };
-    
+
     const needMoveToUp = ref(false);
     const onFocusEvent = (event) => {
       let potisionY = event.target.getBoundingClientRect().y;
@@ -523,7 +545,7 @@ export default defineComponent({
         needMoveToUp.value = true;
       }
       datepicker.show = true;
-    }
+    };
 
     select(props.valueAttr);
 

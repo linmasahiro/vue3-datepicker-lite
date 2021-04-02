@@ -5,6 +5,7 @@
     :class-attr="datepickerSetting.class"
     :value-attr="datepickerSetting.value"
     :placeholder-attr="datepickerSetting.placeholder"
+    :is-button-type="datepickerSetting.isButtonType"
     :locale="datepickerSetting.locale"
     :year-minus="datepickerSetting.yearMinus"
     :from="datepickerSetting.fromDate"
@@ -19,6 +20,7 @@
     :class-attr="datepickerSetting2.class"
     :value-attr="datepickerSetting2.value"
     :placeholder-attr="datepickerSetting2.placeholder"
+    :is-button-type="datepickerSetting2.isButtonType"
     :locale="datepickerSetting2.locale"
     :year-minus="datepickerSetting2.yearMinus"
     :from="datepickerSetting2.fromDate"
@@ -26,6 +28,21 @@
     :disabled-date="datepickerSetting2.disabledDate"
     @value-changed="datepickerSetting2.changeEvent"
     :disableInput="datepickerSetting2.disableInput"
+  ></datepicker-lite>
+  <datepicker-lite
+    :id-attr="datepickerSetting3.id"
+    :name-attr="datepickerSetting3.name"
+    :class-attr="datepickerSetting3.class"
+    :value-attr="datepickerSetting3.value"
+    :placeholder-attr="datepickerSetting3.placeholder"
+    :is-button-type="datepickerSetting3.isButtonType"
+    :locale="datepickerSetting3.locale"
+    :year-minus="datepickerSetting3.yearMinus"
+    :from="datepickerSetting3.fromDate"
+    :to="datepickerSetting3.toDate"
+    :disabled-date="datepickerSetting3.disabledDate"
+    @value-changed="datepickerSetting3.changeEvent"
+    :disableInput="datepickerSetting3.disableInput"
   ></datepicker-lite>
 </template>
 
@@ -45,6 +62,7 @@ export default defineComponent({
       class: "myDateInput",
       value: "2020/10/01",
       placeholder: "Select",
+      isButtonType: false,
       yearMinus: 0,
       fromDate: "2020/02/10",
       toDate: "2021/02/10",
@@ -75,6 +93,7 @@ export default defineComponent({
       class: "myDateInput",
       value: "01/10/2020",
       placeholder: "Select",
+      isButtonType: false,
       yearMinus: 0,
       fromDate: "10/02/2020",
       toDate: "10/02/2021",
@@ -99,9 +118,41 @@ export default defineComponent({
       disableInput: false,
     }
 
+    const datepickerSetting3 = {
+      id: "birthday",
+      name: "birthday",
+      class: "myDateInput",
+      value: "2020/10/01",
+      placeholder: "Select",
+      isButtonType: true,
+      yearMinus: 0,
+      fromDate: "2020/02/10",
+      toDate: "2021/02/10",
+      disabledDate: [
+        "2020/10/02",
+        "2020/10/03",
+        "2020/10/04",
+        "2020/10/05",
+        "2020/10/06",
+      ],
+      locale: {
+        format: "YYYY/MM/DD",
+        weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        startsWeeks: 0,
+        todayBtn: "Today",
+        clearBtn: "Clear",
+        closeBtn: "Close",
+      },
+      changeEvent: (value) => {
+        console.log(value + " selected!");
+      },
+      disableInput: false,
+    }
+
     return {
       datepickerSetting,
-      datepickerSetting2
+      datepickerSetting2,
+      datepickerSetting3
     };
   },
 });

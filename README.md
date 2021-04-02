@@ -20,6 +20,7 @@ A simple datepicker component support Vue3.0!!
         :class-attr="datepickerSetting.class"
         :value-attr="datepickerSetting.value"
         :placeholder-attr="datepickerSetting.placeholder"
+        :is-button-type="datepickerSetting.isButtonType"
         :year-minus="datepickerSetting.yearMinus"
         :from="datepickerSetting.fromDate"
         :to="datepickerSetting.toDate"
@@ -36,6 +37,7 @@ A simple datepicker component support Vue3.0!!
       class: "myDateInput",
       value: "2020/10/01",
       placeholder: "Select",
+      isButtonType: false,
       yearMinus: 0,
       fromDate: "2020/02/10",
       toDate: "2021/02/10",
@@ -61,6 +63,7 @@ A simple datepicker component support Vue3.0!!
     }
 
 ### release
+    ver 1.8.8 : added switch to button-type option
     ver 1.8.7 : added autocomplated off option
     ver 1.8.6 : fixed datepicker on window bottom will be over window height bug
     ver 1.8.5 : fixed locale attribute bug

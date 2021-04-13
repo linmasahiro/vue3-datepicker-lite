@@ -48,7 +48,7 @@
 
 <script>
 import { defineComponent } from "vue";
-import DatepickerLite from "./components/DatepickerLite";
+import DatepickerLite from "./components/DatepickerLite.vue";
 
 export default defineComponent({
   name: "App",
@@ -76,6 +76,7 @@ export default defineComponent({
       locale: {
         format: "YYYY/MM/DD",
         weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        months: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
         startsWeeks: 0,
         todayBtn: "Today",
         clearBtn: "Clear",
@@ -107,6 +108,7 @@ export default defineComponent({
       locale: {
         format: "DD-MM-YYYY",
         weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        months: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
         startsWeeks: 0,
         todayBtn: "Today",
         clearBtn: "Clear",
@@ -138,6 +140,7 @@ export default defineComponent({
       locale: {
         format: "YYYY/MM/DD",
         weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        months: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
         startsWeeks: 0,
         todayBtn: "Today",
         clearBtn: "Clear",

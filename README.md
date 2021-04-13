@@ -51,6 +51,7 @@ A simple datepicker component support Vue3.0!!
       locale: {
         format: "YYYY/MM/DD",
         weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        months: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
         startsWeeks: 0,
         todayBtn: "Today",
         clearBtn: "Clear",
@@ -63,6 +64,7 @@ A simple datepicker component support Vue3.0!!
     }
 
 ### release
+    ver 1.8.9 : added months-option on locale-options
     ver 1.8.8 : added switch to button-type option
     ver 1.8.7 : added autocomplated off option
     ver 1.8.6 : fixed datepicker on window bottom will be over window height bug

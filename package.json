@@ -1,6 +1,6 @@
 {
   "name": "vue3-datepicker-lite",
-  "version": "1.8.8",
+  "version": "1.8.9",
   "description": "A simple datepicker component for vue3.0",
   "repository": {
     "type": "git",
@@ -24,7 +24,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy-file": "vue-cli-service build  --target=lib 'src/index.ts'"
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -33,11 +34,13 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-typescript": "^4.5.12",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.0.0-0"
+    "eslint-plugin-vue": "^7.0.0-0",
+    "typescript": "^4.2.3"
   },
   "eslintConfig": {
     "root": true,

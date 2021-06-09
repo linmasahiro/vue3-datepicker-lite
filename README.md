@@ -22,12 +22,14 @@ A simple datepicker component support Vue3.0!!
         :placeholder-attr="datepickerSetting.placeholder"
         :is-button-type="datepickerSetting.isButtonType"
         :year-minus="datepickerSetting.yearMinus"
+        :years-range="100"
         :from="datepickerSetting.fromDate"
         :to="datepickerSetting.toDate"
         :disabled-date="datepickerSetting.disabledDate"
         :locale="datepickerSetting.locale"
         @value-changed="datepickerSetting.changeEvent"
-        :disableInput="datepickerSetting.disableInput"
+        :disable-input="datepickerSetting.disableInput"
+        :show-bottom-button="true"
     ></datepicker-lite>
 
 ### sample data
@@ -64,6 +66,7 @@ A simple datepicker component support Vue3.0!!
     }
 
 ### release
+    ver 1.9.0 : added show-bottom-button option and years-range option
     ver 1.8.9 : added months-option on locale-options
     ver 1.8.8 : added switch to button-type option
     ver 1.8.7 : added autocomplated off option

@@ -89,7 +89,7 @@
               </tr>
             </tbody>
           </table>
-          <div class="picker__footer">
+          <div v-if="showBottomButton" class="picker__footer">
             <button class="picker__button--today" type="button" @click="selectToday">
               {{ modifiedLocale.todayBtn }}
             </button>
@@ -153,6 +153,10 @@ export default defineComponent({
       type: String,
       default: "",
     },
+    startValueAttr: {
+      type: String,
+      default: "",
+    },
     placeholderAttr: {
       type: String,
       default: "",
@@ -170,6 +174,10 @@ export default defineComponent({
     yearMinus: {
       type: Number,
       default: 0,
+    },
+    yearsRange: {
+      type: Number,
+      default: 10,
     },
     from: {
       type: String,
@@ -202,6 +210,10 @@ export default defineComponent({
     disableInput: {
       type: Boolean,
       default: false,
+    },
+    showBottomButton: {
+      type: Boolean,
+      default: true,
     },
   },
   setup(props, { emit }) {
@@ -302,7 +314,11 @@ export default defineComponent({
       year: 2020,
       years: computed(() => {
         let yearList = [];
-        for (let i: number = datepicker.year - 10; i < datepicker.year + 10; i++) {
+        for (
+          let i: number = datepicker.year - props.yearsRange;
+          i < datepicker.year + props.yearsRange;
+          i++
+        ) {
           if (datepicker.hasRange) {
             let fromDate: Array<string> | null = props.from.match(
               formatSetting.formatRegexp

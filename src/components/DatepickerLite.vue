@@ -125,6 +125,8 @@ interface LocaleObject {
   todayBtn: string;
   clearBtn: string;
   closeBtn: string;
+  slash: string[];
+  slashOffset: number[];
 }
 
 interface DateBlock {
@@ -226,6 +228,8 @@ export default defineComponent({
         todayBtn: "Today",
         clearBtn: "Clear",
         closeBtn: "Close",
+        slash: ["/", "/"],
+        slashOffset: [],
       },
       props.locale
     );
@@ -248,28 +252,37 @@ export default defineComponent({
       const isM = (v: string) => v == "MM" || v == "mm";
       const isD = (v: string) => v == "DD" || v == "dd";
       let tempRegexp = "";
+      let slashOffset = 0;
       for (let i = 1; i < dateFormatGroup.length; i++) {
         if (i == 2) {
           tempRegexp += "([^ a-zA-Z])";
+          modifiedLocale.slash[0] = dateFormatGroup[i];
           continue;
         }
         if (i == 4) {
           tempRegexp += "([^ a-zA-Z])";
+          modifiedLocale.slash[1] = dateFormatGroup[i];
           continue;
         }
         if (isY(dateFormatGroup[i])) {
           tempRegexp += "([0-9]{4})";
           formatSetting.yearIndex = i;
+          slashOffset += 5;
+          modifiedLocale.slashOffset.push(slashOffset);
           continue;
         }
         if (isM(dateFormatGroup[i])) {
           tempRegexp += "([0-9]{2})";
           formatSetting.monthIndex = i;
+          slashOffset += 3;
+          modifiedLocale.slashOffset.push(slashOffset);
           continue;
         }
         if (isD(dateFormatGroup[i])) {
           tempRegexp += "([0-9]{2})";
           formatSetting.dateIndex = i;
+          slashOffset += 3;
+          modifiedLocale.slashOffset.push(slashOffset);
           continue;
         }
       }
@@ -466,6 +479,17 @@ export default defineComponent({
       }),
     });
     watch(selectedValue, (value, prevValue) => {
+      let isComplated = false;
+      const strIns = (str: string, idx: number, val: any) => {
+        if (str.length <= idx) {
+          return str;
+        }
+        if (str.slice(idx, idx + 1) == val) {
+          return str;
+        }
+        var res = str.slice(0, idx) + val + str.slice(idx);
+        return res;
+      };
       if (value != "") {
         let result = "";
         if (formatSetting.formatRegexp.test(value)) {
@@ -480,13 +504,88 @@ export default defineComponent({
               false,
               undefined
             );
+            isComplated = true;
           }
         } else {
-          result = prevValue;
+          if (value.length > prevValue.length) {
+            let fixedStr = strIns(
+              value,
+              modifiedLocale.slashOffset[0] - 1,
+              modifiedLocale.slash[0]
+            );
+            fixedStr = strIns(
+              fixedStr,
+              modifiedLocale.slashOffset[1] - 1,
+              modifiedLocale.slash[1]
+            );
+            let autoFixedChk = strIns(
+              prevValue,
+              modifiedLocale.slashOffset[0] - 1,
+              modifiedLocale.slash[0]
+            );
+            autoFixedChk = strIns(
+              autoFixedChk,
+              modifiedLocale.slashOffset[1] - 1,
+              modifiedLocale.slash[1]
+            );
+            result = fixedStr;
+            if (value == autoFixedChk) {
+              result = autoFixedChk;
+            }
+          } else {
+            result = value;
+          }
+        }
+
+        if (isComplated && datepicker.hasRange) {
+          let fromDate: Array<string> | null = props.from.match(
+            formatSetting.formatRegexp
+          );
+          let toDate = props.to.match(formatSetting.formatRegexp);
+          let temp = value.match(formatSetting.formatRegexp);
+          if (fromDate && temp) {
+            if (
+              new Date(
+                parseInt(temp[formatSetting.yearIndex]),
+                parseInt(temp[formatSetting.monthIndex]) - 1,
+                parseInt(temp[formatSetting.dateIndex])
+              ) <
+              new Date(
+                parseInt(fromDate[formatSetting.yearIndex]),
+                parseInt(fromDate[formatSetting.monthIndex]) - 1,
+                parseInt(fromDate[formatSetting.dateIndex])
+              )
+            ) {
+              result = props.from;
+            }
+          }
+          if (toDate && temp) {
+            if (
+              new Date(
+                parseInt(temp[formatSetting.yearIndex]),
+                parseInt(temp[formatSetting.monthIndex]) - 1,
+                parseInt(temp[formatSetting.dateIndex])
+              ) >
+              new Date(
+                parseInt(toDate[formatSetting.yearIndex]),
+                parseInt(toDate[formatSetting.monthIndex]) - 1,
+                parseInt(toDate[formatSetting.dateIndex])
+              )
+            ) {
+              result = props.to;
+            }
+          }
+        }
+        if (value != result) {
+          isComplated = false;
         }
         selectedValue.value = result;
+      } else {
+        isComplated = true;
       }
-      emit("value-changed", value);
+      if (isComplated) {
+        emit("value-changed", value);
+      }
     });
     watch(
       () => datepicker.show,
@@ -589,15 +688,45 @@ export default defineComponent({
         if (!fromDate || !toDate) {
           return false;
         }
-        if (today < new Date(fromDate.toString())) {
+        if (
+          today <
+          new Date(
+            fromDate[formatSetting.yearIndex] +
+              "/" +
+              fromDate[formatSetting.monthIndex] +
+              "/" +
+              fromDate[formatSetting.dateIndex]
+          )
+        ) {
           tempYear = parseInt(fromDate[formatSetting.yearIndex]);
           tempMonth = parseInt(fromDate[formatSetting.monthIndex]);
-          today = new Date(fromDate.toString());
+          today = new Date(
+            fromDate[formatSetting.yearIndex] +
+              "/" +
+              fromDate[formatSetting.monthIndex] +
+              "/" +
+              fromDate[formatSetting.dateIndex]
+          );
         }
-        if (today > new Date(toDate.toString())) {
+        if (
+          today >
+          new Date(
+            toDate[formatSetting.yearIndex] +
+              "/" +
+              toDate[formatSetting.monthIndex] +
+              "/" +
+              toDate[formatSetting.dateIndex]
+          )
+        ) {
           tempYear = parseInt(toDate[formatSetting.yearIndex]);
           tempMonth = parseInt(toDate[formatSetting.monthIndex]);
-          today = new Date(toDate.toString());
+          today = new Date(
+            toDate[formatSetting.yearIndex] +
+              "/" +
+              toDate[formatSetting.monthIndex] +
+              "/" +
+              toDate[formatSetting.dateIndex]
+          );
         }
       }
       datepicker.year = tempYear;

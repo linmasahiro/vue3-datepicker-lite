@@ -94,22 +94,22 @@ export default defineComponent({
     };
 
     const datepickerSetting2 = {
-      id: "birthday",
-      name: "birthday",
+      id: "birthday2",
+      name: "birthday2",
       class: "myDateInput",
-      value: "01/10/2020",
+      value: "01-10-2020",
       placeholder: "Select",
       isButtonType: false,
       yearMinus: 0,
       yearsRange: 10,
-      fromDate: "10/02/2020",
-      toDate: "10/02/2021",
+      fromDate: "10-02-2020",
+      toDate: "10-02-2021",
       disabledDate: [
-        "02/10/2020",
-        "03/10/2020",
-        "04/10/2020",
-        "05/10/2020",
-        "06/10/2020",
+        "02-10-2020",
+        "03-10-2020",
+        "04-10-2020",
+        "05-10-2020",
+        "06-10-2020",
       ],
       locale: {
         format: "DD-MM-YYYY",
@@ -127,8 +127,8 @@ export default defineComponent({
     };
 
     const datepickerSetting3 = {
-      id: "birthday",
-      name: "birthday",
+      id: "birthday3",
+      name: "birthday3",
       class: "myDateInput",
       value: "2020/10/01",
       placeholder: "Select",

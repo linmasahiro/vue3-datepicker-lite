@@ -75,6 +75,7 @@ A simple datepicker component support Vue3.0!!
     }
 
 ### release
+    ver 1.9.2 : fixed bugs
     ver 1.9.1 : added auto-complate slash in the input field
     ver 1.9.0 : added show-bottom-button option and years-range option
     ver 1.8.9 : added months-option on locale-options

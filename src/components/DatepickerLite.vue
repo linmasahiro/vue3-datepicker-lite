@@ -490,7 +490,7 @@ export default defineComponent({
         var res = str.slice(0, idx) + val + str.slice(idx);
         return res;
       };
-      if (value != "") {
+      if (value && value != "") {
         let result = "";
         if (formatSetting.formatRegexp.test(value)) {
           let temp = value.match(formatSetting.formatRegexp);

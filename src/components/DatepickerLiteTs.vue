@@ -106,8 +106,38 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref, reactive, computed, watch } from "vue";
+
+interface FormatSettingObject {
+  format: string;
+  formatRegexp: RegExp;
+  yearIndex: number;
+  monthIndex: number;
+  dateIndex: number;
+}
+
+interface LocaleObject {
+  format: string;
+  weekday: string[];
+  months: string[];
+  startsWeeks: number;
+  todayBtn: string;
+  clearBtn: string;
+  closeBtn: string;
+  slash: string[];
+  slashOffset: number[];
+}
+
+interface DateBlock {
+  year: number;
+  month: number;
+  day: number;
+  weekday: number;
+  dateString: string;
+  isToday: boolean;
+  isDisabled: boolean;
+}
 
 export default defineComponent({
   name: "my-datepicker",
@@ -201,7 +231,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     // Merge locale setting and default locale setting
-    let modifiedLocale = Object.assign(
+    let modifiedLocale: LocaleObject = Object.assign(
       {
         format: "YYYY/MM/DD",
         weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
@@ -216,7 +246,7 @@ export default defineComponent({
       props.locale
     );
     // Local date format setting
-    let formatSetting = reactive({
+    let formatSetting: FormatSettingObject = reactive({
       format: modifiedLocale.format,
       formatRegexp: new RegExp("([0-9]{4})/([0-9]{2})/([0-9]{2})"),
       yearIndex: 1,
@@ -237,9 +267,9 @@ export default defineComponent({
       formatSetting.format = "YYYY/MM/DD";
     }
     if (dateFormatGroup) {
-      const isY = (v) => v == "YYYY" || v == "yyyy";
-      const isM = (v) => v == "MM" || v == "mm";
-      const isD = (v) => v == "DD" || v == "dd";
+      const isY = (v: string) => v == "YYYY" || v == "yyyy";
+      const isM = (v: string) => v == "MM" || v == "mm";
+      const isD = (v: string) => v == "DD" || v == "dd";
       let tempRegexp = "";
       let slashOffset = 0;
       for (let i = 1; i < dateFormatGroup.length; i++) {
@@ -285,7 +315,7 @@ export default defineComponent({
     /**
      * Date formatter
      */
-    const formatDate = (dateObj, hasMinus) => {
+    const formatDate = (dateObj: Date, hasMinus: boolean) => {
       let format = formatSetting.format;
       let yyyy = dateObj.getFullYear();
       if (hasMinus) {
@@ -333,16 +363,16 @@ export default defineComponent({
       years: computed(() => {
         let yearList = [];
         for (
-          let i = datepicker.year - props.yearsRange;
+          let i: number = datepicker.year - props.yearsRange;
           i < datepicker.year + props.yearsRange;
           i++
         ) {
           if (datepicker.hasRange) {
             // active limited range
-            let fromDate = props.from.match(
+            let fromDate: Array<string> | null = props.from.match(
               formatSetting.formatRegexp
             );
-            let toDate = props.to.match(formatSetting.formatRegexp);
+            let toDate: Array<string> | null = props.to.match(formatSetting.formatRegexp);
             if (fromDate && i < parseInt(fromDate[formatSetting.yearIndex])) {
               continue;
             }
@@ -360,10 +390,10 @@ export default defineComponent({
         for (let i = 1; i <= 12; i++) {
           if (datepicker.hasRange) {
             // active limited range
-            let fromDate = props.from.match(
+            let fromDate: Array<string> | null = props.from.match(
               formatSetting.formatRegexp
             );
-            let toDate = props.to.match(formatSetting.formatRegexp);
+            let toDate: Array<string> | null = props.to.match(formatSetting.formatRegexp);
             if (
               fromDate &&
               datepicker.year == parseInt(fromDate[formatSetting.yearIndex]) &&
@@ -390,12 +420,12 @@ export default defineComponent({
         return result;
       }),
       days: computed(() => {
-        let year = datepicker.year;
-        let month = datepicker.month;
-        let startDate = new Date(year + "/" + month + "/1");
-        let lastDate = new Date(year, month, 0);
-        let startDateWeekday = startDate.getDay();
-        let lastDateWeekday = lastDate.getDay();
+        let year: number = datepicker.year;
+        let month: number = datepicker.month;
+        let startDate: Date = new Date(year + "/" + month + "/1");
+        let lastDate: Date = new Date(year, month, 0);
+        let startDateWeekday: number = startDate.getDay();
+        let lastDateWeekday: number = lastDate.getDay();
         
         //
         // find weekday
@@ -420,21 +450,21 @@ export default defineComponent({
         // create calendar
         //
 
-        let days = [];
-        let row = [];
-        let today = formatDate(new Date(), false);
-        let isDisabled = false;
+        let days: Array<DateBlock[]> = [];
+        let row: Array<DateBlock> = [];
+        let today: string = formatDate(new Date(), false);
+        let isDisabled: boolean = false;
         while (startDate.getTime() - lastDate.getTime() <= 0) {
           isDisabled = false;
-          let yyyy = startDate.getFullYear();
-          let mm = startDate.getMonth() + 1;
-          let dd = startDate.getDate();
+          let yyyy: number = startDate.getFullYear();
+          let mm: number = startDate.getMonth() + 1;
+          let dd: number = startDate.getDate();
           if (datepicker.hasRange) {
             // active limited range
-            let fromDate = props.from.match(
+            let fromDate: Array<string> | null = props.from.match(
               formatSetting.formatRegexp
             );
-            let toDate = props.to.match(formatSetting.formatRegexp);
+            let toDate: Array<string> | null = props.to.match(formatSetting.formatRegexp);
             if (
               fromDate &&
               (yyyy < parseInt(fromDate[formatSetting.yearIndex]) ||
@@ -460,8 +490,8 @@ export default defineComponent({
           }
           if (!isDisabled && props.disabledDate.length > 0) {
             // active disable date
-            let checkKey = props.disabledDate.findIndex((rawDate) => {
-              let tmpData = rawDate.match(
+            let checkKey = props.disabledDate.findIndex((rawDate: any) => {
+              let tmpData: Array<string> | null = rawDate.match(
                 formatSetting.formatRegexp
               );
               if (tmpData) {
@@ -477,7 +507,7 @@ export default defineComponent({
             });
             isDisabled = checkKey >= 0 ? true : false;
           }
-          let dateObj = {
+          let dateObj: DateBlock = {
             year: yyyy,
             month: mm,
             day: dd,
@@ -502,7 +532,7 @@ export default defineComponent({
      */
     watch(selectedValue, (value, prevValue) => {
       let isComplated = false;
-      const strIns = (str, idx, val) => {
+      const strIns = (str: string, idx: number, val: any) => {
         if (str.length <= idx) {
           return str;
         }
@@ -559,10 +589,10 @@ export default defineComponent({
         }
 
         if (isComplated && datepicker.hasRange) {
-          let fromDate = props.from.match(
+          let fromDate: Array<string> | null = props.from.match(
             formatSetting.formatRegexp
           );
-          let toDate = props.to.match(formatSetting.formatRegexp);
+          let toDate: Array<string> | null = props.to.match(formatSetting.formatRegexp);
           let temp = value.match(formatSetting.formatRegexp);
           if (fromDate && temp) {
             if (
@@ -619,7 +649,7 @@ export default defineComponent({
         }
         selectedValue.value = result;
 
-        let rawDate = result.match(formatSetting.formatRegexp);
+        let rawDate: Array<string> | null = result.match(formatSetting.formatRegexp);
         if (rawDate) {
           rawValue.value = formatDate(
             new Date(
@@ -756,8 +786,8 @@ export default defineComponent({
       let tempYear = today.getFullYear();
       let tempMonth = today.getMonth() + 1;
       if (datepicker.hasRange) {
-        let fromDate = props.from.match(formatSetting.formatRegexp);
-        let toDate = props.to.match(formatSetting.formatRegexp);
+        let fromDate: Array<string> | null = props.from.match(formatSetting.formatRegexp);
+        let toDate: Array<string> | null = props.to.match(formatSetting.formatRegexp);
         if (fromDate) {
           if (
             today <
@@ -828,8 +858,8 @@ export default defineComponent({
     /**
      * Current date event
      */
-    const select = (value) => {
-      let tmp = value.match(formatSetting.formatRegexp);
+    const select = (value: string) => {
+      let tmp: Array<string> | null = value.match(formatSetting.formatRegexp);
       if (tmp) {
         let dateObj = new Date(
           tmp[formatSetting.yearIndex] +
@@ -853,7 +883,7 @@ export default defineComponent({
     //
 
     const needMoveToUp = ref(false);
-    const onFocusEvent = (event) => {
+    const onFocusEvent = (event: any) => {
       let potisionY = event.target.getBoundingClientRect().y;
       needMoveToUp.value = false;
       if (window.innerHeight - potisionY <= 290) {

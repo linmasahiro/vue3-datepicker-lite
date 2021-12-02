@@ -233,6 +233,34 @@ const datepickerSetting2 = {
   },
   disableInput: false,
 }
+
+// if u want to change to your country years and not input box.
+const datepickerSetting3 = {
+  id: "birthday3",
+  name: "birthday3",
+  class: "myDateInput",
+  value: "2020/10/01",
+  placeholder: "Select",
+  isButtonType: true,
+  yearMinus: 1911,
+  yearsRange: 10,
+  fromDate: "2020/02/10",
+  toDate: "",
+  disabledDate: [],
+  locale: {
+    format: "YYYY/MM/DD",
+    weekday: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    months: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+    startsWeeks: 0,
+    todayBtn: "Today",
+    clearBtn: "Clear",
+    closeBtn: "Close",
+  },
+  changeEvent: (value) => {
+    console.log(value + " selected!");
+  },
+  disableInput: false,
+};
                             </code>
                         </pre>
                     </li>

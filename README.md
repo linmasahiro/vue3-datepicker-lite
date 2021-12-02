@@ -75,6 +75,7 @@ A simple datepicker component support Vue3.0!!
     }
 
 ### release
+    ver 1.9.4 : fixed bugs. ref #20
     ver 1.9.3 : removed `core-js` and added `index.d.ts` and no includes `compiler-core.esm-bundler.js`
     ver 1.9.2 : fixed bugs
     ver 1.9.1 : added auto-complate slash in the input field

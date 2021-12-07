@@ -6,8 +6,8 @@
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Flinmasahiro.github.io%2Fvue3-datepicker-lite%2Fdist%2F)](https://linmasahiro.github.io/vue3-datepicker-lite/dist/)
 [![npm](https://img.shields.io/npm/dm/vue3-datepicker-lite)](https://www.npmjs.com/package/vue3-datepicker-lite)
 
-![GitHub Repo stars](https://img.shields.io/github/stars/linmasahiro/vue-scheduler-lite?style=social)
-![GitHub forks](https://img.shields.io/github/forks/linmasahiro/vue-scheduler-lite?style=social)
+![GitHub Repo stars](https://img.shields.io/github/stars/linmasahiro/vue3-datepicker-lite?style=social)
+![GitHub forks](https://img.shields.io/github/forks/linmasahiro/vue3-datepicker-lite?style=social)
 
 ![SampleGif](https://linmasahiro.github.io/vue3-datepicker-lite/sample.gif)
 

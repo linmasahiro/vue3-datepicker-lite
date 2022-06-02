@@ -828,22 +828,25 @@ export default defineComponent({
     /**
      * Current date event
      */
-    const select = (value) => {
-      let tmp = value.match(formatSetting.formatRegexp);
-      if (tmp) {
-        let dateObj = new Date(
-          tmp[formatSetting.yearIndex] +
-            "/" +
-            tmp[formatSetting.monthIndex] +
-            "/" +
-            tmp[formatSetting.dateIndex]
-        );
-        selectedValue.value = formatDate(dateObj, true);
-        datepicker.year = parseInt(tmp[formatSetting.yearIndex]);
-        rawValue.value = value;
-      } else {
-        selectedValue.value = rawValue.value = "";
-      }
+      const select = (value) => {
+          if(value){
+              let tmp = value.match(formatSetting.formatRegexp);
+              if (tmp) {
+                  let dateObj = new Date(
+                      tmp[formatSetting.yearIndex] +
+                      "/" +
+                      tmp[formatSetting.monthIndex] +
+                      "/" +
+                      tmp[formatSetting.dateIndex]
+                  );
+                  selectedValue.value = formatDate(dateObj, true);
+                  datepicker.year = parseInt(tmp[formatSetting.yearIndex]);
+                  rawValue.value = value;
+              }
+          }
+          else {
+            selectedValue.value = rawValue.value = "";
+          }
       datepicker.show = false;
     };
 

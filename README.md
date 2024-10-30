@@ -76,6 +76,7 @@ A simple datepicker component support Vue3.0!!
     }
 
 ### release
+    ver 1.9.7 : fixed bugs. ref #21, #22
     ver 1.9.6 : changed import file for TypeScript
     ver 1.9.5 : fixed wrong path on index.js
     ver 1.9.4 : fixed bugs. ref #20

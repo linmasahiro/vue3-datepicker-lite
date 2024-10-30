@@ -3,6 +3,7 @@ dist
 package-lock.json
 vue.config.js
 tsconfig.json
-babel.config.js
+vite.config.ts
 .gitignore
 .npmignore
+.env

@@ -11,17 +11,21 @@
     </button>
     <input
       v-if="!isButtonType"
-      type="text"
       :id="idAttr"
+      v-model="selectedValue"
       :name="nameAttr"
       :class="classAttr"
       :autocomplete="autocompleteAttr"
       :placeholder="placeholderAttr"
-      v-model="selectedValue"
-      @focus="onFocusEvent"
       :disabled="disableInput"
+      type="text"
+      @focus="onFocusEvent"
+    >
+    <div
+      v-if="datepicker.show"
+      class="picker__mask"
+      @click="close"
     />
-    <div v-if="datepicker.show" class="picker__mask" @click="close"></div>
     <div
       v-if="datepicker.show"
       class="picker__frame"
@@ -32,20 +36,34 @@
           <div class="picker__header">
             <div class="picker__month">
               <select v-model="datepicker.month">
-                <option v-for="(n, i) in datepicker.monthList" :key="i" :value="n">
+                <option 
+                  v-for="(n, i) in datepicker.monthList" 
+                  :key="i" 
+                  :value="n"
+                >
                   {{ modifiedLocale.months[n - 1] }}
                 </option>
               </select>
             </div>
             <div class="picker__year">
               <select v-model="datepicker.year">
-                <option v-for="(val, i) in datepicker.years" :key="i" :value="val">
+                <option
+                  v-for="(val, i) in datepicker.years"
+                  :key="i"
+                  :value="val"
+                >
                   {{ val - yearMinus }}
                 </option>
               </select>
             </div>
-            <div class="picker__nav--prev" @click="prevMonth"></div>
-            <div class="picker__nav--next" @click="nextMonth"></div>
+            <div 
+              class="picker__nav--prev" 
+              @click="prevMonth"
+            />
+            <div 
+              class="picker__nav--next" 
+              @click="nextMonth"
+            />
           </div>
           <table class="picker__table">
             <thead>
@@ -69,8 +87,15 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(row, i) in datepicker.days" :key="i">
-                <td role="presentation" v-for="(val, j) in row" :key="j">
+              <tr 
+                v-for="(row, i) in datepicker.days"
+                :key="i"
+              >
+                <td 
+                  v-for="(val, j) in row" 
+                  :key="j"
+                  role="presentation"
+                >
                   <div
                     class="picker__day"
                     :class="{
@@ -89,14 +114,29 @@
               </tr>
             </tbody>
           </table>
-          <div v-if="showBottomButton" class="picker__footer">
-            <button class="picker__button--today" type="button" @click="selectToday">
+          <div
+            v-if="showBottomButton"
+            class="picker__footer"
+          >
+            <button
+              class="picker__button--today"
+              type="button"
+              @click="selectToday"
+            >
               {{ modifiedLocale.todayBtn }}
             </button>
-            <button class="picker__button--clear" type="button" @click="clear">
+            <button
+              class="picker__button--clear"
+              type="button"
+              @click="clear"
+            >
               {{ modifiedLocale.clearBtn }}
             </button>
-            <button class="picker__button--close" type="button" @click="close">
+            <button
+              class="picker__button--close"
+              type="button"
+              @click="close"
+            >
               {{ modifiedLocale.closeBtn }}
             </button>
           </div>
@@ -140,19 +180,22 @@ interface DateBlock {
 }
 
 export default defineComponent({
-  name: "my-datepicker",
+  name: "MyDatepicker",
   props: {
     // Element's ID attribute
     idAttr: {
       type: String,
+      default: "",
     },
     // Element's name attribute
     nameAttr: {
       type: String,
+      default: "",
     },
     // Element's class attribute
     classAttr: {
       type: String,
+      default: "",
     },
     // Element's value attribute (Default value)
     valueAttr: {
@@ -229,7 +272,24 @@ export default defineComponent({
       default: true,
     },
   },
-  setup(props, { emit }) {
+  emits: ["value-changed"],
+  setup(props: {
+    idAttr: string;
+    nameAttr: string;
+    classAttr: string;
+    valueAttr: string;
+    placeholderAttr: string;
+    autocompleteAttr: string;
+    isButtonType: boolean;
+    yearMinus: number;
+    yearsRange: number;
+    from: string;
+    to: string;
+    disabledDate: string[];
+    locale: LocaleObject;
+    disableInput: boolean;
+    showBottomButton: boolean;
+  }, { emit }: { emit: (event: 'value-changed', value: string) => void }) {
     // Merge locale setting and default locale setting
     let modifiedLocale: LocaleObject = Object.assign(
       {
@@ -316,21 +376,30 @@ export default defineComponent({
      * Date formatter
      */
     const formatDate = (dateObj: Date, hasMinus: boolean) => {
-      let format = formatSetting.format;
-      let yyyy = dateObj.getFullYear();
-      if (hasMinus) {
-        yyyy = yyyy - props.yearMinus;
-      }
-      format = format.replace(/yyyy/g, yyyy.toString());
-      format = format.replace(/YYYY/g, yyyy.toString());
-      format = format.replace(/MM/g, ("0" + (dateObj.getMonth() + 1)).slice(-2));
-      format = format.replace(/dd/g, ("0" + dateObj.getDate()).slice(-2));
-      format = format.replace(/DD/g, ("0" + dateObj.getDate()).slice(-2));
-      format = format.replace(/HH/g, ("0" + dateObj.getHours()).slice(-2));
-      format = format.replace(/mm/g, ("0" + dateObj.getMinutes()).slice(-2));
-      format = format.replace(/ss/g, ("0" + dateObj.getSeconds()).slice(-2));
-      format = format.replace(/SSS/g, ("00" + dateObj.getMilliseconds()).slice(-3));
-      return format;
+      const formatters = {
+        'yyyy|YYYY': (d: Date) => {
+          const year = d.getFullYear();
+          return hasMinus ? (year - props.yearMinus).toString() : year.toString();
+        },
+        'MM': (d: Date) => padZero(d.getMonth() + 1),
+        'dd|DD': (d: Date) => padZero(d.getDate()),
+        'HH': (d: Date) => padZero(d.getHours()),
+        'mm': (d: Date) => padZero(d.getMinutes()), 
+        'ss': (d: Date) => padZero(d.getSeconds()),
+        'SSS': (d: Date) => padZero(d.getMilliseconds(), 3)
+      };
+      const padZero = (num: number, length = 2) => {
+        return num.toString().padStart(length, '0');
+      };
+
+      let result = formatSetting.format;
+      Object.entries(formatters).forEach(([pattern, formatter]) => {
+        result = result.replace(
+          new RegExp(pattern, 'g'),
+          formatter(dateObj)
+        );
+      });
+      return result;
     };
 
     const selectedValue = ref("");
@@ -453,7 +522,7 @@ export default defineComponent({
         let days: Array<DateBlock[]> = [];
         let row: Array<DateBlock> = [];
         let today: string = formatDate(new Date(), false);
-        let isDisabled: boolean = false;
+        let isDisabled = false;
         while (startDate.getTime() - lastDate.getTime() <= 0) {
           isDisabled = false;
           let yyyy: number = startDate.getFullYear();
@@ -528,20 +597,43 @@ export default defineComponent({
     });
 
     /**
+     * Auto complete input value
+     */
+    const autoComplete = (value: string, isBlur = false) => {
+      const parts = value.split(modifiedLocale.slash[0]);
+      if (modifiedLocale.slash[0] == modifiedLocale.slash[1]) {
+        // if slash is same, then only one slash
+        if (parts.length > 1) {
+          parts[0] = parts[0].padStart(modifiedLocale.slashOffset[0] - 1, '0');
+        }
+        if (parts.length > 2) {
+          parts[1] = parts[1].padStart(modifiedLocale.slashOffset[1] - modifiedLocale.slashOffset[0] - 1, '0');
+          if (isBlur) {
+            parts[2] = parts[2].padStart(10 - (value.length - 1), '0');
+          }
+        }
+      } else {
+        // if slash is different, then two slashes
+        if (parts.length > 1) {
+          parts[0] = parts[0].padStart(modifiedLocale.slashOffset[0] - 1, '0');
+        }
+        const parts2 = parts[1].split(modifiedLocale.slash[1]);
+        if (parts2.length > 1) {
+          parts2[0] = parts2[0].padStart(modifiedLocale.slashOffset[1] - modifiedLocale.slashOffset[0] - 1, '0');
+          if (isBlur) {
+            parts2[1] = parts2[1].padStart(10 - (value.length - 1), '0');
+          }
+          parts[1] = parts2.join(modifiedLocale.slash[1]);
+        }
+      }
+      return parts.join(modifiedLocale.slash[0]);
+    }
+
+    /**
      * Watch selectedValue's state
      */
-    watch(selectedValue, (value, prevValue) => {
+    watch(selectedValue, (value: string, prevValue: string) => {
       let isComplated = false;
-      const strIns = (str: string, idx: number, val: any) => {
-        if (str.length <= idx) {
-          return str;
-        }
-        if (str.slice(idx, idx + 1) == val) {
-          return str;
-        }
-        var res = str.slice(0, idx) + val + str.slice(idx);
-        return res;
-      };
       if (value && value != "") {
         let result = "";
         if (formatSetting.formatRegexp.test(value)) {
@@ -559,30 +651,7 @@ export default defineComponent({
           }
         } else {
           if (!props.yearMinus && value.length > prevValue.length) {
-            let fixedStr = strIns(
-              value,
-              modifiedLocale.slashOffset[0] - 1,
-              modifiedLocale.slash[0]
-            );
-            fixedStr = strIns(
-              fixedStr,
-              modifiedLocale.slashOffset[1] - 1,
-              modifiedLocale.slash[1]
-            );
-            let autoFixedChk = strIns(
-              prevValue,
-              modifiedLocale.slashOffset[0] - 1,
-              modifiedLocale.slash[0]
-            );
-            autoFixedChk = strIns(
-              autoFixedChk,
-              modifiedLocale.slashOffset[1] - 1,
-              modifiedLocale.slash[1]
-            );
-            result = fixedStr;
-            if (value == autoFixedChk) {
-              result = autoFixedChk;
-            }
+            result = autoComplete(value, false);
           } else {
             result = value;
           }
@@ -673,7 +742,7 @@ export default defineComponent({
      */
     watch(
       () => datepicker.show,
-      (state) => {
+      (state: boolean) => {
         if (state) {
           let thisMonth = new Date();
           if (rawValue.value) {
@@ -697,7 +766,7 @@ export default defineComponent({
      */
     watch(
       () => props.valueAttr,
-      (value, prevValue) => {
+      (value: string, prevValue: string) => {
         if (value == "") {
           selectedValue.value = "";
           return false;
@@ -852,6 +921,14 @@ export default defineComponent({
      * Close datepicker event
      */
     const close = () => {
+      // last input value auto complete
+      selectedValue.value = autoComplete(selectedValue.value, true);
+      if (! formatSetting.formatRegexp.test(selectedValue.value)) {
+        console.log("date format is correct");
+        clear();
+      }
+
+      // hide datepicker
       datepicker.show = false;
     };
 
@@ -859,23 +936,26 @@ export default defineComponent({
      * Current date event
      */
     const select = (value: string) => {
-      let tmp: Array<string> | null = value.match(formatSetting.formatRegexp);
-      if (tmp) {
-        let dateObj = new Date(
-          tmp[formatSetting.yearIndex] +
-            "/" +
-            tmp[formatSetting.monthIndex] +
-            "/" +
-            tmp[formatSetting.dateIndex]
-        );
-        selectedValue.value = formatDate(dateObj, true);
-        datepicker.year = parseInt(tmp[formatSetting.yearIndex]);
-        rawValue.value = value;
+      if (value) {
+        let tmp: Array<string> | null = value.match(formatSetting.formatRegexp);
+        if (tmp) {
+          let dateObj = new Date(
+            tmp[formatSetting.yearIndex] +
+              "/" +
+              tmp[formatSetting.monthIndex] +
+              "/" +
+              tmp[formatSetting.dateIndex]
+          );
+          selectedValue.value = formatDate(dateObj, true);
+          datepicker.year = parseInt(tmp[formatSetting.yearIndex]);
+          rawValue.value = value;
+        }
       } else {
         selectedValue.value = rawValue.value = "";
       }
       datepicker.show = false;
     };
+
 
     ///////////////////
     //

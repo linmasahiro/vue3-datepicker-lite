@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import { devtools } from './devtool';
 
-createApp(App).mount('#app')
+createApp(App).use(devtools).mount('#app');

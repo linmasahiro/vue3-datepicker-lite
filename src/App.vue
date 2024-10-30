@@ -12,9 +12,9 @@
     :from="datepickerSetting.fromDate"
     :to="datepickerSetting.toDate"
     :disabled-date="datepickerSetting.disabledDate"
-    @value-changed="datepickerSetting.changeEvent"
     :disable-input="datepickerSetting.disableInput"
-  ></datepicker-lite>
+    @value-changed="datepickerSetting.changeEvent"
+  />
   <datepicker-lite
     :id-attr="datepickerSetting2.id"
     :name-attr="datepickerSetting2.name"
@@ -28,9 +28,9 @@
     :from="datepickerSetting2.fromDate"
     :to="datepickerSetting2.toDate"
     :disabled-date="datepickerSetting2.disabledDate"
-    @value-changed="datepickerSetting2.changeEvent"
     :disable-input="datepickerSetting2.disableInput"
-  ></datepicker-lite>
+    @value-changed="datepickerSetting2.changeEvent"
+  />
   <datepicker-lite
     :id-attr="datepickerSetting3.id"
     :name-attr="datepickerSetting3.name"
@@ -44,10 +44,10 @@
     :from="datepickerSetting3.fromDate"
     :to="datepickerSetting3.toDate"
     :disabled-date="datepickerSetting3.disabledDate"
-    @value-changed="datepickerSetting3.changeEvent"
     :disable-input="datepickerSetting3.disableInput"
     :show-bottom-button="false"
-  ></datepicker-lite>
+    @value-changed="datepickerSetting3.changeEvent"
+  />
 </template>
 
 <script>
